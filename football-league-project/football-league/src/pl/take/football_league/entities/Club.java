@@ -15,9 +15,9 @@ public class Club {
     @OneToMany(mappedBy = "club",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
     Set<Player> players;
     @OneToMany(mappedBy = "homeClub",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Match> homeMatches;
+    Set<Game> homeMatches;
     @OneToMany(mappedBy = "awayClub",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Match> awayMatches;
+    Set<Game> awayMatches;
 
     public long getId() {
         return id;
@@ -59,19 +59,19 @@ public class Club {
         this.players = players;
     }
 
-    public Set<Match> getHomeMatches() {
+    public Set<Game> getHomeMatches() {
         return homeMatches;
     }
 
-    public void setHomeMatches(Set<Match> homeMatches) {
+    public void setHomeMatches(Set<Game> homeMatches) {
         this.homeMatches = homeMatches;
     }
 
-    public Set<Match> getAwayMatches() {
+    public Set<Game> getAwayMatches() {
         return awayMatches;
     }
 
-    public void setAwayMatches(Set<Match> awayMatches) {
+    public void setAwayMatches(Set<Game> awayMatches) {
         this.awayMatches = awayMatches;
     }
 }

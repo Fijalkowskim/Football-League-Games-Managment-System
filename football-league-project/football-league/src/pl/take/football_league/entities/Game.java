@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-public class Match {
+public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     long id;
@@ -13,7 +13,7 @@ public class Match {
     int awayResult;
     int homeResult;
     String location;
-    @OneToMany(mappedBy = "match",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
+    @OneToMany(mappedBy = "game",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
     Set<Goal> goals;
     @ManyToOne
     Club homeClub;
@@ -21,7 +21,7 @@ public class Match {
     Club awayClub;
     @ManyToMany
     @JoinTable(
-            joinColumns = @JoinColumn(name = "matchId"),
+            joinColumns = @JoinColumn(name = "gameId"),
             inverseJoinColumns = @JoinColumn(name = "playerId")
     )
     Set<Player> players;

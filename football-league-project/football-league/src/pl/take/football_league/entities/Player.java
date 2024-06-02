@@ -19,7 +19,7 @@ public class Player {
     @ManyToOne
     Club club;
     @ManyToMany(mappedBy = "players")
-    Set<Match> matches;
+    Set<Game> games;
 
     public long getId() {
         return id;
@@ -85,11 +85,11 @@ public class Player {
         this.club = club;
     }
 
-    public Set<Match> getMatches() {
-        return matches;
+    public Set<Game> getGames() {
+        return games;
     }
 
-    public void setMatches(Set<Match> matches) {
-        this.matches = matches;
+    public void setGames(Set<Game> games) {
+        this.games = games;
     }
 }

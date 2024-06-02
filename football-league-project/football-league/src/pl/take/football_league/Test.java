@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 
 public class Test {
 public static void main(String[] args) {
-	EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("football-league");
+	EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("komis");
 	EntityManager manager = managerFactory.createEntityManager(); 
 	manager.getTransaction().begin();
 	
