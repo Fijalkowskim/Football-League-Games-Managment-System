@@ -1,0 +1,7 @@
+How to:
+Pliki z tego repa muszą znaleźć się w C:/take tam gdzie macie eclipse, jdk i wildfly-10.1.0Final
+Napisze wam folder workspace i tak byc powinno
+Jesli macie tam wiecej folderow to dodajcie je do .gitignore
+
+-pracujemy w workspace w defaultowym projekcie "take"
+-projekt football-league-project zostawiam tylko po to zeby przeniesc encje ktore tam zrobilem
