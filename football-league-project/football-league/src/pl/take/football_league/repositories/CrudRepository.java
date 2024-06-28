@@ -8,14 +8,14 @@ import javax.persistence.EntityManagerFactory;
 import pl.take.football_league.EntityManagerFactoryCreator;
 import pl.take.football_league.entities.Club;
 
-public class ClubRepository {
+public class CrudRepository {
 	EntityManagerFactory emf = EntityManagerFactoryCreator.getFactory();
 	
-	public void create(Club club) {
+	public <T> void create(T obj) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		try {
-			em.persist(club);
+			em.persist(obj);
 			em.getTransaction().commit();
 		}
 		catch(Exception e){}
@@ -24,11 +24,11 @@ public class ClubRepository {
 		}
 	}
 	
-	public void update(Club club) {
+	public <T> void update(T obj) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		try {
-			em.merge(club);
+			em.merge(obj);
 			em.getTransaction().commit();
 		}
 		catch(Exception e){}
@@ -37,11 +37,12 @@ public class ClubRepository {
 		}
 	}
 
-	public void delete(Club club) {
+	public void delete(Object obj) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		try {
-			em.remove(club);
+			Object ref = em.merge(obj);
+			em.remove(ref);
 			em.getTransaction().commit();
 		}
 		catch(Exception e){}
@@ -50,11 +51,11 @@ public class ClubRepository {
 		}
 	}
 	
-	public Club get(long id) {
+	public <T> T get(long id, Class<T> type) {
 		EntityManager em = emf.createEntityManager();
-		Club club = em.find(Club.class, id);
+		T entity = em.find(type, id);
 		em.close();
-		return club;
+		return entity;
 	}
 	
 	public List<Club> getAll() {		
