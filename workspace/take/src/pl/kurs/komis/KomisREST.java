@@ -13,11 +13,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 @Path("/komis")
-//@Consumes({ "application/json" })
-//@Produces({ "application/json" })
+@Consumes({ "application/json" })
+@Produces({ "application/json" })
 
-@Consumes({ "application/xml" })
-@Produces({ "application/xml" })
+//@Consumes({ "application/xml" })
+//@Produces({ "application/xml" })
 
 public class KomisREST implements Komis {
 

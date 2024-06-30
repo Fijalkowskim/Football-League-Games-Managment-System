@@ -5,6 +5,10 @@
 	<persistence-unit name="komis">
 		<jta-data-source>java:/DefaultDS</jta-data-source>
 		<class>pl.kurs.komis.Car</class>
+		<class>pl.take.football_league.entities.Club</class>
+		<class>pl.take.football_league.entities.Game</class>
+		<class>pl.take.football_league.entities.Goal</class>
+		<class>pl.take.football_league.entities.Player</class>
 
 		<properties>
 			<!--<property name="hibernate.hbm2ddl.auto" value="create-drop" />-->
