@@ -13,6 +13,7 @@ public class Game {
     int awayResult;
     int homeResult;
     String location;
+    boolean played;
     @OneToMany(mappedBy = "game",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
     Set<Goal> goals;
     @ManyToOne

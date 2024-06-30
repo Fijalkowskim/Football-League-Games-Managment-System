@@ -8,6 +8,7 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.TABLE)
     long id;
     int minute;
+    boolean ownGoal;
     @ManyToOne
     Player scorer;
     @ManyToOne
