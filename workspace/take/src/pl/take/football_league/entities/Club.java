@@ -2,6 +2,7 @@ package pl.take.football_league.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,11 +14,11 @@ public class Club {
     String location;
     Date dateOfCreation;
     @OneToMany(mappedBy = "club",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Player> players;
+    Set<Player> players = new HashSet();
     @OneToMany(mappedBy = "homeClub",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Game> homeMatches;
+    Set<Game> homeMatches = new HashSet();;
     @OneToMany(mappedBy = "awayClub",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Game> awayMatches;
+    Set<Game> awayMatches = new HashSet();;
 
     public long getId() {
         return id;

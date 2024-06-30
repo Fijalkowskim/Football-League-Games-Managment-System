@@ -8,7 +8,7 @@ public class EntityManagerFactoryCreator {
 
     static {
         try {
-           factory = Persistence.createEntityManagerFactory("liga");
+           factory = Persistence.createEntityManagerFactory("komis");
         } catch(ExceptionInInitializerError e) {
             throw e;
         }

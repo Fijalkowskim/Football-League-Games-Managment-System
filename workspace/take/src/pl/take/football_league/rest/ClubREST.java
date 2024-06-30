@@ -1,6 +1,7 @@
 package pl.take.football_league.rest;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -12,10 +13,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import pl.take.football_league.ejb.ClubEJB;
-import pl.take.football_league.entities.Club;
+import pl.take.football_league.dtos.*;
+import pl.take.football_league.ejb.*;
+import pl.take.football_league.entities.*;
 
-@Path("/club")
+@Path("/clubs")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
 
@@ -27,47 +29,41 @@ public class ClubREST {
 	@EJB
 	ClubEJB bean;
 
-	//@Override
 	@POST
-	public String create(Club club) {
-		bean.create(club);
-		return "club created!";
+	public String create(CreateClubDto clubDto) {
+		bean.create(clubDto);
+		return "Club created!";
 	}
 
-	//@Override
 	@GET
 	@Path("/{idc}")
-	public Club find(@PathParam("idc") int idc) {
-		Club club = bean.find(idc);
-		return club;
+	public ReturnClubDto find(@PathParam("idc") int idc) {
+		ReturnClubDto clubDto = bean.find(idc);
+		return clubDto;
 	}
 
-	//@Override
 	@GET
-	public List<Club> get() {
-		List<Club> clubList = bean.get();
-		return clubList;
+	public List<ReturnClubDto> get() {
+		List<ReturnClubDto> clubListDto = bean.get();
+		return clubListDto;
 	}
 
-	//@Override
 	@PUT
-	public String update(Club club) {
+	@Path("/{idc}")
+	public String update(@PathParam("idc") int idc, UpdateClubDto clubDto) {
 		try {
-			bean.update(club);
-			return "club updated!";
+			bean.update(idc, clubDto);
+			return "Club updated!";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "club not updated :(";
+			return "Club not updated.";
 		}
 	}
 
-
-	//@Override
 	@DELETE
 	@Path("/{idc}")
 	public void delete(@PathParam("idc") int idc) {
 		bean.delete(idc);
 	}
-
 
 }
