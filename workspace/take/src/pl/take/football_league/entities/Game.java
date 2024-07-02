@@ -9,6 +9,7 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     long id;
+    @Temporal(TemporalType.DATE)
     Date date;
     int awayResult;
     int homeResult;

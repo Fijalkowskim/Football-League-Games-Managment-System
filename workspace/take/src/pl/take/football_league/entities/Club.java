@@ -12,6 +12,7 @@ public class Club {
     long id;
     String name;
     String location;
+    @Temporal(TemporalType.DATE)
     Date dateOfCreation;
     @OneToMany(mappedBy = "club",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
     Set<Player> players = new HashSet();

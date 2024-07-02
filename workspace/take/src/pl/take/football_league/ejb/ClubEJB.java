@@ -7,64 +7,38 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import pl.kurs.komis.Car;
-import pl.take.football_league.daos.*;
 import pl.take.football_league.dtos.*;
 import pl.take.football_league.entities.*;
 
 @Stateless
 public class ClubEJB {
-
-	CrudDao crudDao = new CrudDao();
-	ClubDao clubDao = new ClubDao();
-	
-	/*public void create(CreateClubDto clubDto) {
-		System.out.println("Creating club!");
-		Club club = mapToClub(clubDto);
-		crudDao.create(club);
-		System.out.println("Club created!");
-	}*/
 	
 	@PersistenceContext(name="komis")
 	EntityManager em;
-
 	
 	public void create(CreateClubDto clubDto) {
-		//em.getTransaction().begin();
-		//try {
-			
-			em.persist(mapToClub(clubDto));
-			//em.getTransaction().commit();
-		//}
-		//catch(Exception e){}
-		//finally{
-			//em.close();
-		//}
+		System.out.println("Creating club!");	
+		em.persist(mapToClub(clubDto));
+		System.out.println("Club created!");
 	}
 
 	public void delete(int idc) {
 		System.out.println("Deleting club!");
-		Club club = crudDao.get(Club.class, idc);
-		crudDao.delete(club);
+		long id = idc;
+		Club club = em.find(Club.class, id);
+		em.remove(club);
 		System.out.println("Club deleted!");
 	}
 
-	/*public List<Club> findByMake(String make) {
-		Query q = manager.createQuery("select c from Club c where c.make like :make");
-		q.setParameter("make", make);
-		@SuppressWarnings("unchecked")
-		List<Car> lista =q.getResultList();
-		return lista;
-	}*/
-
 	public ReturnClubDto find(int idc) {
-		Club club = crudDao.get(Club.class, idc);
+		long id = idc;
+		Club club = em.find(Club.class, id);
 		ReturnClubDto clubDto = mapToReturnClubDto(club);
 		return clubDto;
 	}
 
-	public List<ReturnClubDto> get() {
-		List<Club> clubList = clubDao.getAll();
+	public List<ReturnClubDto> get() {		
+		List<Club> clubList = em.createQuery("select c from Club c").getResultList();
 		List<ReturnClubDto> clubDtoList = new ArrayList();
 		for(int i = 0; i < clubList.size(); i++)
 			clubDtoList.add(mapToReturnClubDto(clubList.get(i)));
@@ -73,11 +47,12 @@ public class ClubEJB {
 
 	public void update(int idc, UpdateClubDto clubDto) {
 		System.out.println("Updating club!");
-		Club club = crudDao.get(Club.class, idc);
+		long id = idc;
+		Club club = em.find(Club.class, id);
 		if(clubDto.getName() != null) club.setName(clubDto.getName());
 		if(clubDto.getLocation() != null) club.setLocation(clubDto.getLocation());
 		if(clubDto.getDateOfCreation() != null) club.setDateOfCreation(clubDto.getDateOfCreation());
-		crudDao.update(club);
+		club = em.merge(club);
 		System.out.println("Club updated!");
 	}
 
