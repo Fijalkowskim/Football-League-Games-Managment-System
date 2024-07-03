@@ -1,49 +1,49 @@
 package pl.take.football_league.dtos;
 
 public class CreateGoalDto {
-	int minute;
-    boolean ownGoal;
-    long scorerId;
-    long assistantId;
-    long gameId;
+	Integer minute;
+    Boolean ownGoal;
+    Long scorerId;
+    Long assistantId;
+    Long gameId;
     
-	public int getMinute() {
+	public Integer getMinute() {
 		return minute;
 	}
 	
-	public void setMinute(int minute) {
+	public void setMinute(Integer minute) {
 		this.minute = minute;
 	}
 	
-	public boolean isOwnGoal() {
+	public Boolean isOwnGoal() {
 		return ownGoal;
 	}
 	
-	public void setOwnGoal(boolean ownGoal) {
+	public void setOwnGoal(Boolean ownGoal) {
 		this.ownGoal = ownGoal;
 	}
 	
-	public long getScorerId() {
+	public Long getScorerId() {
 		return scorerId;
 	}
 	
-	public void setScorerId(long scorerId) {
+	public void setScorerId(Long scorerId) {
 		this.scorerId = scorerId;
 	}
 	
-	public long getAssistantId() {
+	public Long getAssistantId() {
 		return assistantId;
 	}
 	
-	public void setAssistantId(long assistantId) {
+	public void setAssistantId(Long assistantId) {
 		this.assistantId = assistantId;
 	}
 	
-	public long getGameId() {
+	public Long getGameId() {
 		return gameId;
 	}
 	
-	public void setGameId(long gameId) {
+	public void setGameId(Long gameId) {
 		this.gameId = gameId;
 	}
 }

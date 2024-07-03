@@ -59,6 +59,13 @@ public class ClubREST {
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
+	@GET
+	@Path("/{idc}/awayMatches")
+	public Response getClubAwayMatches(@PathParam("idc") long idc) {
+		Pair<Integer, List<ReturnGameDto>> result = clubBean.getClubAwayMatches(idc);
+		return getResponse(result.getFirst(), result.getSecond());
+	}
+	
 	@POST
 	public Response createClub(CreateClubDto clubDto) {
 		Pair<Integer, String> result = clubBean.createClub(clubDto);
@@ -89,7 +96,7 @@ public class ClubREST {
 			case 201:
 				return Response.status(Response.Status.CREATED).entity(entity).build();
 			case 404:
-				return Response.status(Response.Status.NOT_FOUND).entity("Club with given ID does not exist.").build();
+				return Response.status(Response.Status.NOT_FOUND).entity("Club with given id does not exist.").build();
 			default:
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong.").build();
 		}

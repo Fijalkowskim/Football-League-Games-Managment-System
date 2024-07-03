@@ -1,20 +1,11 @@
 package pl.take.football_league.dtos;
 
 public class CreatePlayerDto {
-	long id;
     String name;
     String surname;
-    int number;
+    Integer number;
     String position;
-    long clubId;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    Long clubId;
 
     public String getName() {
         return name;
@@ -32,11 +23,11 @@ public class CreatePlayerDto {
         this.surname = surname;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -48,11 +39,11 @@ public class CreatePlayerDto {
         this.position = position;
     }
     
-    public long getClubId() {
+    public Long getClubId() {
         return clubId;
     }
 
-    public void setClubId(long clubId) {
+    public void setClubId(Long clubId) {
         this.clubId = clubId;
     }
 }

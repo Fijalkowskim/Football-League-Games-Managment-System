@@ -36,7 +36,7 @@ public class ClubEJB {
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
-			System.out.println("Club with given ID does not exist!");
+			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, ReturnClubDto>(404, null);
 		}
 		ReturnClubDto clubDto = mapper.mapToReturnClubDto(club);
@@ -49,7 +49,7 @@ public class ClubEJB {
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
-			System.out.println("Club with given ID does not exist!");
+			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, List<ReturnPlayerDto>>(404, null);
 		}
 		Set<Player> players = club.getPlayers();
@@ -65,7 +65,7 @@ public class ClubEJB {
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
-			System.out.println("Club with given ID does not exist!");
+			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, List<ReturnGameDto>>(404, null);
 		}
 		Set<Game> games = club.getHomeMatches();
@@ -81,7 +81,7 @@ public class ClubEJB {
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
-			System.out.println("Club with given ID does not exist!");
+			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, List<ReturnGameDto>>(404, null);
 		}
 		Set<Game> games = club.getAwayMatches();
@@ -111,7 +111,7 @@ public class ClubEJB {
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
-			System.out.println("Club with given ID does not exist!");
+			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, ReturnClubDto>(404, null);
 		}
 		if(updateClubDto.getName() != null) club.setName(updateClubDto.getName());
@@ -128,7 +128,7 @@ public class ClubEJB {
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
-			System.out.println("Club with given ID does not exist!");
+			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, String>(404, "");
 		}
 		em.remove(club);

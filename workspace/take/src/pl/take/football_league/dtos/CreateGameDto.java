@@ -8,12 +8,12 @@ import pl.take.football_league.entities.Player;
 
 public class CreateGameDto {
     Date date;
-    int awayResult;
-    int homeResult;
+    Integer awayResult;
+    Integer homeResult;
     String location;
-    boolean played;
-    long homeClubId;
-    long awayClubId;
+    Boolean played;
+    Long homeClubId;
+    Long awayClubId;
     Set<Player> players = new HashSet();
 
     public Date getDate() {
@@ -24,19 +24,19 @@ public class CreateGameDto {
         this.date = date;
     }
 
-    public int getAwayResult() {
+    public Integer getAwayResult() {
         return awayResult;
     }
 
-    public void setAwayResult(int awayResult) {
+    public void setAwayResult(Integer awayResult) {
         this.awayResult = awayResult;
     }
 
-    public int getHomeResult() {
+    public Integer getHomeResult() {
         return homeResult;
     }
 
-    public void setHomeResult(int homeResult) {
+    public void setHomeResult(Integer homeResult) {
         this.homeResult = homeResult;
     }
 
@@ -48,27 +48,27 @@ public class CreateGameDto {
         this.location = location;
     }
 
-	public boolean isPlayed() {
+	public Boolean isPlayed() {
 		return played;
 	}
 
-	public void setPlayed(boolean played) {
+	public void setPlayed(Boolean played) {
 		this.played = played;
 	}
 
-	public long getHomeClubId() {
+	public Long getHomeClubId() {
 		return homeClubId;
 	}
 
-	public void setHomeClubId(long homeClubId) {
+	public void setHomeClubId(Long homeClubId) {
 		this.homeClubId = homeClubId;
 	}
 
-	public long getAwayClubId() {
+	public Long getAwayClubId() {
 		return awayClubId;
 	}
 
-	public void setAwayClubId(long awayClubId) {
+	public void setAwayClubId(Long awayClubId) {
 		this.awayClubId = awayClubId;
 	}
 
