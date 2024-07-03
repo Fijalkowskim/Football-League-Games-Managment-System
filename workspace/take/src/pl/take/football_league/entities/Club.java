@@ -15,11 +15,11 @@ public class Club {
     @Temporal(TemporalType.DATE)
     Date dateOfCreation;
     @OneToMany(mappedBy = "club",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Player> players = new HashSet();
+    Set<Player> players = new HashSet<Player>();
     @OneToMany(mappedBy = "homeClub",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Game> homeMatches = new HashSet();;
+    Set<Game> homeMatches = new HashSet<Game>();
     @OneToMany(mappedBy = "awayClub",cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=false)
-    Set<Game> awayMatches = new HashSet();;
+    Set<Game> awayMatches = new HashSet<Game>();
 
     public long getId() {
         return id;

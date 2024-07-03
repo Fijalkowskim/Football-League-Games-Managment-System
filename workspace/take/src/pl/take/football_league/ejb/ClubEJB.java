@@ -2,11 +2,14 @@ package pl.take.football_league.ejb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import pl.take.football_league.Mapper;
+import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
 import pl.take.football_league.entities.*;
 
@@ -16,65 +19,88 @@ public class ClubEJB {
 	@PersistenceContext(name="komis")
 	EntityManager em;
 	
-	public void create(CreateClubDto clubDto) {
-		System.out.println("Creating club!");	
-		em.persist(mapToClub(clubDto));
+	Mapper mapper = new Mapper();
+	
+	public Pair<Integer, String> createClub(CreateClubDto clubDto) {
+		System.out.println("Creating club!");
+		if(clubDto.getName() == null || clubDto.getLocation() == null || clubDto.getDateOfCreation() == null)
+		{
+			System.out.println("Dto contains null values!");
+			return new Pair<Integer, String>(400, "");
+		}
+		Club club = mapper.mapToFlatClub(clubDto);
+		em.persist(club);
+		long id = club.getId();
 		System.out.println("Club created!");
+		return new Pair<Integer, String>(201, "/clubs/" + id);
 	}
-
-	public void delete(int idc) {
-		System.out.println("Deleting club!");
-		long id = idc;
-		Club club = em.find(Club.class, id);
-		em.remove(club);
-		System.out.println("Club deleted!");
+	
+	public Pair<Integer, ReturnClubDto> getClub(long idc) {
+		System.out.println("Getting club with id = " + idc + "!");
+		Club club = em.find(Club.class, idc);
+		if(club == null)
+		{
+			System.out.println("Club with given ID does not exist!");
+			return new Pair<Integer, ReturnClubDto>(404, null);
+		}
+		ReturnClubDto clubDto = mapper.mapToReturnClubDto(club);
+		System.out.println("Returning club with id = " + idc + "!");
+		return new Pair<Integer, ReturnClubDto>(200, clubDto);
 	}
-
-	public ReturnClubDto find(int idc) {
-		long id = idc;
-		Club club = em.find(Club.class, id);
-		ReturnClubDto clubDto = mapToReturnClubDto(club);
-		return clubDto;
+	
+	public Pair<Integer, List<ReturnPlayerDto>> getClubPlayers(long idc) {
+		System.out.println("Getting club with id = " + idc + "!");
+		Club club = em.find(Club.class, idc);
+		if(club == null)
+		{
+			System.out.println("Club with given ID does not exist!");
+			return new Pair<Integer, List<ReturnPlayerDto>>(404, null);
+		}
+		Set<Player> players = club.getPlayers();
+		List<ReturnPlayerDto> playerDtoList = new ArrayList();
+		for(Player player : players)
+			playerDtoList.add(mapper.mapToReturnPlayerDto(player));
+		System.out.println("Returning club with id = " + idc + "!");
+		return new Pair<Integer, List<ReturnPlayerDto>>(200, playerDtoList);
 	}
-
-	public List<ReturnClubDto> get() {		
+	
+	public Pair<Integer, List<ReturnClubDto>> getClubs() {
+		System.out.println("Getting all clubs!");
 		List<Club> clubList = em.createQuery("select c from Club c").getResultList();
 		List<ReturnClubDto> clubDtoList = new ArrayList();
 		for(int i = 0; i < clubList.size(); i++)
-			clubDtoList.add(mapToReturnClubDto(clubList.get(i)));
-		return clubDtoList;
+			clubDtoList.add(mapper.mapToReturnClubDto(clubList.get(i)));
+		System.out.println("Returning all clubs!");
+		return new Pair<Integer, List<ReturnClubDto>>(200, clubDtoList);
 	}
 
-	public void update(int idc, UpdateClubDto clubDto) {
+	public Pair<Integer, ReturnClubDto> updateClub(long idc, UpdateClubDto updateClubDto) {
 		System.out.println("Updating club!");
-		long id = idc;
-		Club club = em.find(Club.class, id);
-		if(clubDto.getName() != null) club.setName(clubDto.getName());
-		if(clubDto.getLocation() != null) club.setLocation(clubDto.getLocation());
-		if(clubDto.getDateOfCreation() != null) club.setDateOfCreation(clubDto.getDateOfCreation());
+		Club club = em.find(Club.class, idc);
+		if(club == null)
+		{
+			System.out.println("Club with given ID does not exist!");
+			return new Pair<Integer, ReturnClubDto>(404, null);
+		}
+		if(updateClubDto.getName() != null) club.setName(updateClubDto.getName());
+		if(updateClubDto.getLocation() != null) club.setLocation(updateClubDto.getLocation());
+		if(updateClubDto.getDateOfCreation() != null) club.setDateOfCreation(updateClubDto.getDateOfCreation());
 		club = em.merge(club);
+		ReturnClubDto returnClubDto = mapper.mapToReturnClubDto(club);
 		System.out.println("Club updated!");
-	}
-
-	private ReturnClubDto mapToReturnClubDto(Club club)
-	{
-		ReturnClubDto clubDto = new ReturnClubDto();
-		clubDto.setId(club.getId());
-		clubDto.setName(club.getName());
-		clubDto.setLocation(club.getLocation());
-		clubDto.setDateOfCreation(club.getDateOfCreation());
-		clubDto.setPlayers("/clubs/" + club.getId() + "/players");
-		clubDto.setHomeMatches("/clubs/" + club.getId() + "/homeMatches");
-		clubDto.setAwayMatches("/clubs/" + club.getId() + "/awayMatches");
-		return clubDto;
+		return new Pair<Integer, ReturnClubDto>(200, returnClubDto);
 	}
 	
-	private Club mapToClub(CreateClubDto clubDto)
-	{
-		Club club = new Club();
-		club.setName(clubDto.getName());
-		club.setLocation(clubDto.getLocation());
-		club.setDateOfCreation(clubDto.getDateOfCreation());
-		return club;
+	public Pair<Integer, String> deleteClub(long idc) {
+		System.out.println("Deleting club!");
+		Club club = em.find(Club.class, idc);
+		if(club == null)
+		{
+			System.out.println("Club with given ID does not exist!");
+			return new Pair<Integer, String>(404, "");
+		}
+		em.remove(club);
+		System.out.println("Club deleted!");
+		return new Pair<Integer, String>(200, "Club deleted");
 	}
 }

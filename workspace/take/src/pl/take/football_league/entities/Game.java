@@ -2,6 +2,7 @@ package pl.take.football_league.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,7 @@ public class Game {
     String location;
     boolean played;
     @OneToMany(mappedBy = "game",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
-    Set<Goal> goals;
+    Set<Goal> goals = new HashSet<Goal>();
     @ManyToOne
     Club homeClub;
     @ManyToOne
@@ -26,7 +27,7 @@ public class Game {
             joinColumns = @JoinColumn(name = "gameId"),
             inverseJoinColumns = @JoinColumn(name = "playerId")
     )
-    Set<Player> players;
+    Set<Player> players = new HashSet<Player>();
 
     public long getId() {
         return id;
@@ -68,7 +69,15 @@ public class Game {
         this.location = location;
     }
 
-    public Set<Goal> getGoals() {
+    public boolean isPlayed() {
+		return played;
+	}
+
+	public void setPlayed(boolean played) {
+		this.played = played;
+	}
+
+	public Set<Goal> getGoals() {
         return goals;
     }
 
