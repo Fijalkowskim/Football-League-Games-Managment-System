@@ -21,18 +21,14 @@ public class ClubEJB {
 	
 	Mapper mapper = new Mapper();
 	
-	public Pair<Integer, String> createClub(CreateClubDto clubDto) {
-		System.out.println("Creating club!");
-		if(clubDto.getName() == null || clubDto.getLocation() == null || clubDto.getDateOfCreation() == null)
-		{
-			System.out.println("Dto contains null values!");
-			return new Pair<Integer, String>(400, "");
-		}
-		Club club = mapper.mapToFlatClub(clubDto);
-		em.persist(club);
-		long id = club.getId();
-		System.out.println("Club created!");
-		return new Pair<Integer, String>(201, "/clubs/" + id);
+	public Pair<Integer, List<ReturnClubDto>> getClubs() {
+		System.out.println("Getting all clubs!");
+		List<Club> clubList = em.createQuery("select c from Club c").getResultList();
+		List<ReturnClubDto> clubDtoList = new ArrayList();
+		for(int i = 0; i < clubList.size(); i++)
+			clubDtoList.add(mapper.mapToReturnClubDto(clubList.get(i)));
+		System.out.println("Returning all clubs!");
+		return new Pair<Integer, List<ReturnClubDto>>(200, clubDtoList);
 	}
 	
 	public Pair<Integer, ReturnClubDto> getClub(long idc) {
@@ -49,7 +45,7 @@ public class ClubEJB {
 	}
 	
 	public Pair<Integer, List<ReturnPlayerDto>> getClubPlayers(long idc) {
-		System.out.println("Getting club with id = " + idc + "!");
+		System.out.println("Getting players from club with id = " + idc + "!");
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
@@ -60,18 +56,54 @@ public class ClubEJB {
 		List<ReturnPlayerDto> playerDtoList = new ArrayList();
 		for(Player player : players)
 			playerDtoList.add(mapper.mapToReturnPlayerDto(player));
-		System.out.println("Returning club with id = " + idc + "!");
+		System.out.println("Returning players from club with id = " + idc + "!");
 		return new Pair<Integer, List<ReturnPlayerDto>>(200, playerDtoList);
 	}
 	
-	public Pair<Integer, List<ReturnClubDto>> getClubs() {
-		System.out.println("Getting all clubs!");
-		List<Club> clubList = em.createQuery("select c from Club c").getResultList();
-		List<ReturnClubDto> clubDtoList = new ArrayList();
-		for(int i = 0; i < clubList.size(); i++)
-			clubDtoList.add(mapper.mapToReturnClubDto(clubList.get(i)));
-		System.out.println("Returning all clubs!");
-		return new Pair<Integer, List<ReturnClubDto>>(200, clubDtoList);
+	public Pair<Integer, List<ReturnGameDto>> getClubHomeMatches(long idc) {
+		System.out.println("Getting home matches of club with id = " + idc + "!");
+		Club club = em.find(Club.class, idc);
+		if(club == null)
+		{
+			System.out.println("Club with given ID does not exist!");
+			return new Pair<Integer, List<ReturnGameDto>>(404, null);
+		}
+		Set<Game> games = club.getHomeMatches();
+		List<ReturnGameDto> gameDtoList = new ArrayList();
+		for(Game game : games)
+			gameDtoList.add(mapper.mapToReturnGameDto(game));
+		System.out.println("Returning home matches of club with id = " + idc + "!");
+		return new Pair<Integer, List<ReturnGameDto>>(200, gameDtoList);
+	}
+	
+	public Pair<Integer, List<ReturnGameDto>> getClubAwayMatches(long idc) {
+		System.out.println("Getting away matches of club with id = " + idc + "!");
+		Club club = em.find(Club.class, idc);
+		if(club == null)
+		{
+			System.out.println("Club with given ID does not exist!");
+			return new Pair<Integer, List<ReturnGameDto>>(404, null);
+		}
+		Set<Game> games = club.getAwayMatches();
+		List<ReturnGameDto> gameDtoList = new ArrayList();
+		for(Game game : games)
+			gameDtoList.add(mapper.mapToReturnGameDto(game));
+		System.out.println("Returning away matches of club with id = " + idc + "!");
+		return new Pair<Integer, List<ReturnGameDto>>(200, gameDtoList);
+	}
+	
+	public Pair<Integer, String> createClub(CreateClubDto clubDto) {
+		System.out.println("Creating club!");
+		if(clubDto.getName() == null || clubDto.getLocation() == null || clubDto.getDateOfCreation() == null)
+		{
+			System.out.println("Dto contains null values!");
+			return new Pair<Integer, String>(400, "");
+		}
+		Club club = mapper.mapToFlatClub(clubDto);
+		em.persist(club);
+		long id = club.getId();
+		System.out.println("Club created!");
+		return new Pair<Integer, String>(201, "/clubs/" + id);
 	}
 
 	public Pair<Integer, ReturnClubDto> updateClub(long idc, UpdateClubDto updateClubDto) {

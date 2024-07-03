@@ -78,4 +78,24 @@ public class Mapper {
 		game.setHomeResult(gameDto.getHomeResult());
 		return game;
 	}
+	
+	public ReturnGoalDto mapToReturnGoalDto(Goal goal)
+	{
+		ReturnGoalDto goalDto = new ReturnGoalDto();
+		goalDto.setId(goal.getId());
+		goalDto.setMinute(goal.getMinute());
+		goalDto.setOwnGoal(goal.isOwnGoal());
+		goalDto.setScorer("/goals/" + goal.getId() + "/scorer");
+		goalDto.setAssistant("/goals/" + goal.getId() + "/assistant");
+		goalDto.setGame("/goals/" + goal.getId() + "/match");
+		return goalDto;
+	}
+	
+	public Goal mapToFlatGoal(CreateGoalDto goalDto)
+	{
+		Goal goal = new Goal();
+		goal.setMinute(goalDto.getMinute());
+		goal.setOwnGoal(goalDto.isOwnGoal());
+		return goal;
+	}
 }

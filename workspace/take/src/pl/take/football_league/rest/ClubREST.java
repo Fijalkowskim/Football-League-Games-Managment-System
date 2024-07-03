@@ -52,6 +52,13 @@ public class ClubREST {
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
+	@GET
+	@Path("/{idc}/homeMatches")
+	public Response getClubHomeMatches(@PathParam("idc") long idc) {
+		Pair<Integer, List<ReturnGameDto>> result = clubBean.getClubHomeMatches(idc);
+		return getResponse(result.getFirst(), result.getSecond());
+	}
+	
 	@POST
 	public Response createClub(CreateClubDto clubDto) {
 		Pair<Integer, String> result = clubBean.createClub(clubDto);

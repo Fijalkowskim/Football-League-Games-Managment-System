@@ -32,7 +32,15 @@ public class Goal {
         this.minute = minute;
     }
 
-    public Player getScorer() {
+    public boolean isOwnGoal() {
+		return ownGoal;
+	}
+
+	public void setOwnGoal(boolean ownGoal) {
+		this.ownGoal = ownGoal;
+	}
+
+	public Player getScorer() {
         return scorer;
     }
 
