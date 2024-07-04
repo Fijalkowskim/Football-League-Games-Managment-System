@@ -1,7 +1,11 @@
 import React from "react";
 
 function Goals() {
-  return <div>Goals</div>;
+  return (
+    <PageWrapper>
+      <div></div>
+    </PageWrapper>
+  );
 }
 
 export default Goals;

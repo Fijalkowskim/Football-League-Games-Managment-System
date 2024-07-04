@@ -21,7 +21,7 @@ function Navbar() {
   };
   return (
     <div
-      className={`fixed left-0 top-0 z-20 flex w-screen flex-row items-center justify-center gap-8 bg-black px-5 py-3 text-text-50 shadow-sm sm:px-24 xl:px-60 text-lg`}
+      className={`fixed left-0 top-0 z-20 flex w-screen flex-row items-center justify-center gap-8 bg-slate-900 px-5 py-3 text-text-50 shadow-sm sm:px-24 xl:px-60 text-lg`}
     >
       <div className="flex flex-col items-center justify-center pointer-events-none">
         <p className="text-base -mb-3">Football</p>

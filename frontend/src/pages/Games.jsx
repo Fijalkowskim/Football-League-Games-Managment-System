@@ -1,7 +1,11 @@
 import React from "react";
 
 function Games() {
-  return <div>Games</div>;
+  return (
+    <PageWrapper>
+      <div></div>
+    </PageWrapper>
+  );
 }
 
 export default Games;

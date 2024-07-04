@@ -17,5 +17,5 @@
 }
 
 body {
-  @apply bg-primary-50 font-primary font-normal text-text-900;
+  @apply bg-primary-200 font-primary font-normal text-text-900;
 }
