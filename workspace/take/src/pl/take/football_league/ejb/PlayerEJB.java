@@ -1,9 +1,11 @@
 package pl.take.football_league.ejb;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -12,6 +14,7 @@ import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
 import pl.take.football_league.entities.*;
 
+@Stateless
 public class PlayerEJB {
 	
 	@PersistenceContext(name="komis")
@@ -111,15 +114,28 @@ public class PlayerEJB {
 			playerDto.getPosition() == null || playerDto.getClubId() == null)
 		{
 			System.out.println("Dto contains null values!");
-			return new Pair<Integer, String>(400, "");
+			return new Pair<Integer, String>(400, "Dto contains null values.");
 		}
-		Player player = mapper.mapToFlatPlayer(playerDto);
+		if(playerDto.getNumber() < 1 || playerDto.getNumber() > 99)
+		{
+			System.out.println("Player's number must be between 1 and 99!");
+			return new Pair<Integer, String>(400, "Player's number must be between 1 and 99.");
+		}
 		Club club = em.find(Club.class, playerDto.getClubId());
 		if(club == null)
 		{
 			System.out.println("Club with given id does not exist!");
-			return new Pair<Integer, String>(400, null);
+			return new Pair<Integer, String>(400, "Club with given id does not exist.");
 		}
+		Set<Integer> numbers = new HashSet<Integer>();
+		for(Player player : club.getPlayers())
+			numbers.add(player.getNumber());
+		if(numbers.contains(playerDto.getNumber()))
+		{
+			System.out.println("Player with given number already exists!");
+			return new Pair<Integer, String>(400, "Player with given number already exists.");
+		}
+		Player player = mapper.mapToFlatPlayer(playerDto);
 		player.setClub(club);
 		Set<Player> players = club.getPlayers();
 		players.add(player);
@@ -130,22 +146,37 @@ public class PlayerEJB {
 		return new Pair<Integer, String>(201, "/players/" + id);
 	}
 
-	public Pair<Integer, ReturnPlayerDto> updatePlayer(long idc, UpdatePlayerDto updatePlayerDto) {
+	public Pair<Integer, String> updatePlayer(long idc, UpdatePlayerDto updatePlayerDto) {
 		System.out.println("Updating player!");
+		if(updatePlayerDto.getNumber() < 1 || updatePlayerDto.getNumber() > 99)
+		{
+			System.out.println("Player's number must be between 1 and 99!");
+			return new Pair<Integer, String>(400, "Player's number must be between 1 and 99.");
+		}
 		Player player = em.find(Player.class, idc);
 		if(player == null)
 		{
 			System.out.println("Player with given id does not exist!");
-			return new Pair<Integer, ReturnPlayerDto>(404, null);
+			return new Pair<Integer, String>(404, null);
 		}
 		if(updatePlayerDto.getName() != null) player.setName(updatePlayerDto.getName());
 		if(updatePlayerDto.getSurname() != null) player.setSurname(updatePlayerDto.getSurname());
-		if(updatePlayerDto.getNumber() != null) player.setNumber(updatePlayerDto.getNumber());
+		if(updatePlayerDto.getNumber() != null)
+		{
+			Set<Integer> numbers = new HashSet<Integer>();
+			for(Player clubPlayer : player.getClub().getPlayers())
+				numbers.add(clubPlayer.getNumber());
+			if(numbers.contains(updatePlayerDto.getNumber()))
+			{
+				System.out.println("Player with given number already exists!");
+				return new Pair<Integer, String>(400, "Player with given number already exists.");
+			}
+			player.setNumber(updatePlayerDto.getNumber());
+		}
 		if(updatePlayerDto.getPosition() != null) player.setPosition(updatePlayerDto.getPosition());
 		player = em.merge(player);
-		ReturnPlayerDto returnPlayerDto = mapper.mapToReturnPlayerDto(player);
 		System.out.println("Player updated!");
-		return new Pair<Integer, ReturnPlayerDto>(200, returnPlayerDto);
+		return new Pair<Integer, String>(200, "Player updated!");
 	}
 	
 	public Pair<Integer, String> deletePlayer(long idc) {
@@ -156,9 +187,9 @@ public class PlayerEJB {
 			System.out.println("Player with given id does not exist!");
 			return new Pair<Integer, String>(404, "");
 		}
-		/*Set<Player> players = player.getClub().getPlayers();
+		Set<Player> players = player.getClub().getPlayers();
 		players.remove(player);
-		player.getClub().setPlayers(players);*/
+		player.getClub().setPlayers(players);
 		for(Game match : player.getMatches())
 			em.remove(match);
 		em.remove(player);

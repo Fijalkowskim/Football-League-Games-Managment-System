@@ -12,7 +12,7 @@ public class CreateGameDto {
     Boolean played;
     Long homeClubId;
     Long awayClubId;
-    List<Integer> players = new ArrayList<Integer>();
+    List<Long> players = new ArrayList<Long>();
 
     public Date getDate() {
         return date;
@@ -70,11 +70,11 @@ public class CreateGameDto {
 		this.awayClubId = awayClubId;
 	}
 
-	public List<Integer> getPlayers() {
+	public List<Long> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List<Integer> players) {
+	public void setPlayers(List<Long> players) {
 		this.players = players;
 	}
 }

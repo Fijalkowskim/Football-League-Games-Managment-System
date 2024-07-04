@@ -79,7 +79,7 @@ public class GameREST {
 	@PUT
 	@Path("/{idc}")
 	public Response updateMatch(@PathParam("idc") long idc, UpdateGameDto gameDto) {
-		Pair<Integer, ReturnGameDto> result = gameBean.updateMatch(idc, gameDto);
+		Pair<Integer, String> result = gameBean.updateMatch(idc, gameDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 

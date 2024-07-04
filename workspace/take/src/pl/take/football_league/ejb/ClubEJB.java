@@ -1,6 +1,8 @@
 package pl.take.football_league.ejb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -98,7 +100,12 @@ public class ClubEJB {
 		if(clubDto.getName() == null || clubDto.getLocation() == null || clubDto.getDateOfCreation() == null)
 		{
 			System.out.println("Dto contains null values!");
-			return new Pair<Integer, String>(400, "");
+			return new Pair<Integer, String>(400, "Dto contains null values.");
+		}
+		if(clubDto.getDateOfCreation().compareTo(Calendar.getInstance().getTime()) > 0)
+		{
+			System.out.println("Date of creation cannot be after the current time!");
+			return new Pair<Integer, String>(400, "Date of creation cannot be after the current time.");
 		}
 		Club club = mapper.mapToFlatClub(clubDto);
 		em.persist(club);
@@ -107,21 +114,28 @@ public class ClubEJB {
 		return new Pair<Integer, String>(201, "/clubs/" + id);
 	}
 
-	public Pair<Integer, ReturnClubDto> updateClub(long idc, UpdateClubDto updateClubDto) {
+	public Pair<Integer, String> updateClub(long idc, UpdateClubDto updateClubDto) {
 		System.out.println("Updating club!");
 		Club club = em.find(Club.class, idc);
 		if(club == null)
 		{
 			System.out.println("Club with given id does not exist!");
-			return new Pair<Integer, ReturnClubDto>(404, null);
+			return new Pair<Integer, String>(404, null);
 		}
 		if(updateClubDto.getName() != null) club.setName(updateClubDto.getName());
 		if(updateClubDto.getLocation() != null) club.setLocation(updateClubDto.getLocation());
-		if(updateClubDto.getDateOfCreation() != null) club.setDateOfCreation(updateClubDto.getDateOfCreation());
+		if(updateClubDto.getDateOfCreation() != null)
+		{
+			if(updateClubDto.getDateOfCreation().compareTo(Calendar.getInstance().getTime()) > 0)
+			{
+				System.out.println("Date of creation cannot be after the current time!");
+				return new Pair<Integer, String>(400, "Date of creation cannot be after the current time.");
+			}
+			club.setDateOfCreation(updateClubDto.getDateOfCreation());
+		}
 		club = em.merge(club);
-		ReturnClubDto returnClubDto = mapper.mapToReturnClubDto(club);
 		System.out.println("Club updated!");
-		return new Pair<Integer, ReturnClubDto>(200, returnClubDto);
+		return new Pair<Integer, String>(200, "Club updated.");
 	}
 	
 	public Pair<Integer, String> deleteClub(long idc) {

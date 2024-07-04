@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
-import pl.take.football_league.ejb.PlayerEJB;
+import pl.take.football_league.ejb.*;
 
 @Path("/players")
 @Consumes({ "application/json" })
@@ -79,7 +79,7 @@ public class PlayerREST {
 	@PUT
 	@Path("/{idc}")
 	public Response updatePlayer(@PathParam("idc") long idc, UpdatePlayerDto playerDto) {
-		Pair<Integer, ReturnPlayerDto> result = playerBean.updatePlayer(idc, playerDto);
+		Pair<Integer, String> result = playerBean.updatePlayer(idc, playerDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 

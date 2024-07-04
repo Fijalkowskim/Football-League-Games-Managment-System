@@ -73,7 +73,7 @@ public class ClubREST {
 	@PUT
 	@Path("/{idc}")
 	public Response updateClub(@PathParam("idc") long idc, UpdateClubDto clubDto) {
-		Pair<Integer, ReturnClubDto> result = clubBean.updateClub(idc, clubDto);
+		Pair<Integer, String> result = clubBean.updateClub(idc, clubDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 

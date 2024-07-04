@@ -1,10 +1,13 @@
 package pl.take.football_league.ejb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,6 +16,7 @@ import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
 import pl.take.football_league.entities.*;
 
+@Stateless
 public class GameEJB {
 	
 	@PersistenceContext(name="komis")
@@ -110,21 +114,32 @@ public class GameEJB {
 				matchDto.getHomeClubId() == null || matchDto.getAwayClubId() == null)
 		{
 			System.out.println("Dto contains null values!");
-			return new Pair<Integer, String>(400, "");
+			return new Pair<Integer, String>(400, "Dto contains null values.");
 		}
-		Game match = mapper.mapToFlatGame(matchDto);
+		if(matchDto.getHomeClubId() == matchDto.getAwayClubId())
+		{
+			System.out.println("Home and away clubs cannot be the same!");
+			return new Pair<Integer, String>(400, "Home and away clubs cannot be the same.");
+		}
 		Club homeClub = em.find(Club.class, matchDto.getHomeClubId());
 		if(homeClub == null)
 		{
 			System.out.println("Home club with given id does not exist!");
-			return new Pair<Integer, String>(400, null);
+			return new Pair<Integer, String>(400, "Home club with given id does not exist.");
 		}
 		Club awayClub = em.find(Club.class, matchDto.getAwayClubId());
 		if(awayClub == null)
 		{
 			System.out.println("Away club with given id does not exist!");
-			return new Pair<Integer, String>(400, null);
+			return new Pair<Integer, String>(400, "Away club with given id does not exist.");
 		}
+		Date youngerClubDate = (homeClub.getDateOfCreation().compareTo(awayClub.getDateOfCreation()) > 0 ? homeClub.getDateOfCreation() : awayClub.getDateOfCreation());
+		if(matchDto.getDate().compareTo(Calendar.getInstance().getTime()) > 0 || matchDto.getDate().compareTo(youngerClubDate) < 0)
+		{
+			System.out.println("The date of the match is invalid!");
+			return new Pair<Integer, String>(400, "The date of the match is invalid.");
+		}
+		Game match = mapper.mapToFlatGame(matchDto);
 		match.setHomeClub(homeClub);
 		Set<Game> homeMatches = homeClub.getHomeMatches();
 		homeMatches.add(match);
@@ -138,7 +153,7 @@ public class GameEJB {
 			if(matchDto.getPlayers().size() < 22 || matchDto.getPlayers().size() > 32)
 			{
 				System.out.println("Players array must contain between 22 and 32 values!");
-				return new Pair<Integer, String>(400, null);
+				return new Pair<Integer, String>(400, "Players array must contain between 22 and 32 values.");
 			}
 			else
 			{
@@ -150,32 +165,32 @@ public class GameEJB {
 					if(matchDto.getPlayers().get(i) == null)
 					{
 						System.out.println("Players array contains null values!");
-						return new Pair<Integer, String>(400, null);
+						return new Pair<Integer, String>(400, "Players array contains null values.");
 					}
 					Player player = em.find(Player.class, matchDto.getPlayers().get(i));
 					if(player == null)
 					{
 						System.out.println("Player with id = " + matchDto.getPlayers().get(i) + " does not exist!");
-						return new Pair<Integer, String>(400, null);
+						return new Pair<Integer, String>(400, "Player with id = " + matchDto.getPlayers().get(i) + " does not exist.");
 					}
 					if(player.getClub().getId() == match.getHomeClub().getId()) numberOfHomeClubPlayers++;
 					else if(player.getClub().getId() == match.getAwayClub().getId()) numberOfAwayClubPlayers++;
 					else
 					{
 						System.out.println("Player with id = " + matchDto.getPlayers().get(i) + " does not play for those clubs!");
-						return new Pair<Integer, String>(400, null);
+						return new Pair<Integer, String>(400, "Player with id = " + matchDto.getPlayers().get(i) + " does not play for those clubs.");
 					}
 					players.add(player);
 				}
 				if(numberOfHomeClubPlayers < 11 || numberOfHomeClubPlayers > 16)
 				{
 					System.out.println("Number of players playing for home club must be between 11 and 16!");
-					return new Pair<Integer, String>(400, null);
+					return new Pair<Integer, String>(400, "Number of players playing for home club must be between 11 and 16.");
 				}
 				if(numberOfAwayClubPlayers < 11 || numberOfAwayClubPlayers > 16)
 				{
 					System.out.println("Number of players playing for away club must be between 11 and 16!");
-					return new Pair<Integer, String>(400, null);
+					return new Pair<Integer, String>(400, "Number of players playing for away club must be between 11 and 16.");
 				}
 				match.setPlayers(players);
 				for(Player player : players)
@@ -192,15 +207,24 @@ public class GameEJB {
 		return new Pair<Integer, String>(201, "/matches/" + id);
 	}
 
-	public Pair<Integer, ReturnGameDto> updateMatch(long idc, UpdateGameDto updateMatchDto) {
+	public Pair<Integer, String> updateMatch(long idc, UpdateGameDto updateMatchDto) {
 		System.out.println("Updating match!");
 		Game match = em.find(Game.class, idc);
 		if(match == null)
 		{
 			System.out.println("Match with given id does not exist!");
-			return new Pair<Integer, ReturnGameDto>(404, null);
+			return new Pair<Integer, String>(404, null);
 		}
-		if(updateMatchDto.getDate() != null) match.setDate(updateMatchDto.getDate());
+		if(updateMatchDto.getDate() != null)
+		{
+			Date youngerClubDate = (match.getHomeClub().getDateOfCreation().compareTo(match.getAwayClub().getDateOfCreation()) > 0 ? match.getHomeClub().getDateOfCreation() : match.getAwayClub().getDateOfCreation());
+			if(match.getDate().compareTo(Calendar.getInstance().getTime()) > 0 || match.getDate().compareTo(youngerClubDate) < 0)
+			{
+				System.out.println("The date of the match is invalid!");
+				return new Pair<Integer, String>(400, "The date of the match is invalid.");
+			}
+			match.setDate(updateMatchDto.getDate());
+		}
 		if(updateMatchDto.getHomeResult() != null) match.setHomeResult(updateMatchDto.getHomeResult());
 		if(updateMatchDto.getAwayResult() != null) match.setAwayResult(updateMatchDto.getAwayResult());
 		if(updateMatchDto.isPlayed() != null) match.setPlayed(updateMatchDto.isPlayed());
@@ -210,7 +234,7 @@ public class GameEJB {
 			if(updateMatchDto.getPlayers().size() < 22 || updateMatchDto.getPlayers().size() > 32)
 			{
 				System.out.println("Players array must contain between 22 and 32 values!");
-				return new Pair<Integer, ReturnGameDto>(400, null);
+				return new Pair<Integer, String>(400, "Players array must contain between 22 and 32 values.");
 			}
 			else
 			{
@@ -222,32 +246,32 @@ public class GameEJB {
 					if(updateMatchDto.getPlayers().get(i) == null)
 					{
 						System.out.println("Players array contains null values!");
-						return new Pair<Integer, ReturnGameDto>(400, null);
+						return new Pair<Integer, String>(400, "Players array contains null values.");
 					}
 					Player player = em.find(Player.class, updateMatchDto.getPlayers().get(i));
 					if(player == null)
 					{
 						System.out.println("Player with id = " + updateMatchDto.getPlayers().get(i) + " does not exist!");
-						return new Pair<Integer, ReturnGameDto>(400, null);
+						return new Pair<Integer, String>(400, "Player with id = " + updateMatchDto.getPlayers().get(i) + " does not exist.");
 					}
 					if(player.getClub().getId() == match.getHomeClub().getId()) numberOfHomeClubPlayers++;
 					else if(player.getClub().getId() == match.getAwayClub().getId()) numberOfAwayClubPlayers++;
 					else
 					{
 						System.out.println("Player with id = " + updateMatchDto.getPlayers().get(i) + " does not play for those clubs!");
-						return new Pair<Integer, ReturnGameDto>(400, null);
+						return new Pair<Integer, String>(400, "Player with id = " + updateMatchDto.getPlayers().get(i) + " does not play for those clubs.");
 					}
 					players.add(player);
 				}
 				if(numberOfHomeClubPlayers < 11 || numberOfHomeClubPlayers > 16)
 				{
 					System.out.println("Number of players playing for home club must be between 11 and 16!");
-					return new Pair<Integer, ReturnGameDto>(400, null);
+					return new Pair<Integer, String>(400, "Number of players playing for home club must be between 11 and 16.");
 				}
 				if(numberOfAwayClubPlayers < 11 || numberOfAwayClubPlayers > 16)
 				{
 					System.out.println("Number of players playing for away club must be between 11 and 16!");
-					return new Pair<Integer, ReturnGameDto>(400, null);
+					return new Pair<Integer, String>(400, "Number of players playing for away club must be between 11 and 16!");
 				}
 				match.setPlayers(players);
 				for(Player player : players)
@@ -259,9 +283,8 @@ public class GameEJB {
 			}
 		}
 		match = em.merge(match);
-		ReturnGameDto returnMatchDto = mapper.mapToReturnGameDto(match);
 		System.out.println("Match updated!");
-		return new Pair<Integer, ReturnGameDto>(200, returnMatchDto);
+		return new Pair<Integer, String>(200, "Match updated.");
 	}
 	
 	public Pair<Integer, String> deleteMatch(long idc) {
@@ -272,18 +295,18 @@ public class GameEJB {
 			System.out.println("Match with given id does not exist!");
 			return new Pair<Integer, String>(404, "");
 		}
-		/*Set<Game> homeGames = game.getHomeClub().getHomeMatches();
-		homeGames.remove(game);
-		game.getHomeClub().setHomeMatches(homeGames);
-		Set<Game> awayGames = game.getAwayClub().getAwayMatches();
-		awayGames.remove(game);
-		game.getAwayClub().setAwayMatches(awayGames);
-		for(Player player : game.getPlayers())
+		Set<Game> homeMatches = match.getHomeClub().getHomeMatches();
+		homeMatches.remove(match);
+		match.getHomeClub().setHomeMatches(homeMatches);
+		Set<Game> awayMatches = match.getAwayClub().getAwayMatches();
+		awayMatches.remove(match);
+		match.getAwayClub().setAwayMatches(awayMatches);
+		for(Player player : match.getPlayers())
 		{
-			Set<Game> games = player.getGames();
-			games.remove(game);
-			player.setGames(games);
-		}*/
+			Set<Game> matches = player.getMatches();
+			matches.remove(match);
+			player.setMatches(matches);
+		}
 		em.remove(match);
 		System.out.println("Match deleted!");
 		return new Pair<Integer, String>(200, "Match deleted.");

@@ -72,7 +72,7 @@ public class GoalREST {
 	@PUT
 	@Path("/{idc}")
 	public Response updateGoal(@PathParam("idc") long idc, UpdateGoalDto goalDto) {
-		Pair<Integer, ReturnGoalDto> result = goalBean.updateGoal(idc, goalDto);
+		Pair<Integer, String> result = goalBean.updateGoal(idc, goalDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 

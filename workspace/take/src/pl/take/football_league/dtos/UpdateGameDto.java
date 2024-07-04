@@ -10,7 +10,7 @@ public class UpdateGameDto {
     Integer homeResult;
     String location;
     Boolean played;
-    List<Integer> players = new ArrayList<Integer>();
+    List<Long> players = new ArrayList<Long>();
     
 	public Date getDate() {
 		return date;
@@ -52,11 +52,11 @@ public class UpdateGameDto {
 		this.played = played;
 	}
 	
-	public List<Integer> getPlayers() {
+	public List<Long> getPlayers() {
 		return players;
 	}
 	
-	public void setPlayers(List<Integer> players) {
+	public void setPlayers(List<Long> players) {
 		this.players = players;
 	}
 }
