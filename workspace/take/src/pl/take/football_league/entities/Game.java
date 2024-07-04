@@ -18,7 +18,7 @@ public class Game {
     Integer homeResult;
     String location;
     boolean played;
-    @OneToMany(mappedBy = "game",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
+    @OneToMany(mappedBy = "match",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
     Set<Goal> goals = new HashSet<Goal>();
     @ManyToOne
     Club homeClub;
