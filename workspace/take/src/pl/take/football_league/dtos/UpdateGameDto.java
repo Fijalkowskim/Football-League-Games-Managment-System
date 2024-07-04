@@ -1,10 +1,8 @@
 package pl.take.football_league.dtos;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import pl.take.football_league.entities.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateGameDto {
 	Date date;
@@ -12,9 +10,7 @@ public class UpdateGameDto {
     Integer homeResult;
     String location;
     Boolean played;
-    Long homeClubId;
-    Long awayClubId;
-    Set<Player> players = new HashSet();
+    List<Integer> players = new ArrayList<Integer>();
     
 	public Date getDate() {
 		return date;
@@ -48,7 +44,7 @@ public class UpdateGameDto {
 		this.location = location;
 	}
 	
-	public Boolean getPlayed() {
+	public Boolean isPlayed() {
 		return played;
 	}
 	
@@ -56,27 +52,11 @@ public class UpdateGameDto {
 		this.played = played;
 	}
 	
-	public Long getHomeClubId() {
-		return homeClubId;
-	}
-	
-	public void setHomeClubId(Long homeClubId) {
-		this.homeClubId = homeClubId;
-	}
-	
-	public Long getAwayClubId() {
-		return awayClubId;
-	}
-	
-	public void setAwayClubId(Long awayClubId) {
-		this.awayClubId = awayClubId;
-	}
-	
-	public Set<Player> getPlayers() {
+	public List<Integer> getPlayers() {
 		return players;
 	}
 	
-	public void setPlayers(Set<Player> players) {
+	public void setPlayers(List<Integer> players) {
 		this.players = players;
 	}
 }

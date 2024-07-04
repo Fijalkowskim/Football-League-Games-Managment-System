@@ -12,7 +12,7 @@ public class UpdateGoalDto {
 		this.minute = minute;
 	}
 	
-	public Boolean getOwnGoal() {
+	public Boolean isOwnGoal() {
 		return ownGoal;
 	}
 	

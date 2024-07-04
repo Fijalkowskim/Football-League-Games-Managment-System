@@ -12,8 +12,10 @@ public class Game {
     long id;
     @Temporal(TemporalType.DATE)
     Date date;
-    int awayResult;
-    int homeResult;
+    @Column(nullable = true)
+    Integer awayResult;
+    @Column(nullable = true)
+    Integer homeResult;
     String location;
     boolean played;
     @OneToMany(mappedBy = "game",cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
@@ -45,19 +47,19 @@ public class Game {
         this.date = date;
     }
 
-    public int getAwayResult() {
+    public Integer getAwayResult() {
         return awayResult;
     }
 
-    public void setAwayResult(int awayResult) {
+    public void setAwayResult(Integer awayResult) {
         this.awayResult = awayResult;
     }
 
-    public int getHomeResult() {
+    public Integer getHomeResult() {
         return homeResult;
     }
 
-    public void setHomeResult(int homeResult) {
+    public void setHomeResult(Integer homeResult) {
         this.homeResult = homeResult;
     }
 

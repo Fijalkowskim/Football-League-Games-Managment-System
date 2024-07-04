@@ -23,8 +23,9 @@ public class ClubEJB {
 	
 	public Pair<Integer, List<ReturnClubDto>> getClubs() {
 		System.out.println("Getting all clubs!");
+		@SuppressWarnings("unchecked")
 		List<Club> clubList = em.createQuery("select c from Club c").getResultList();
-		List<ReturnClubDto> clubDtoList = new ArrayList();
+		List<ReturnClubDto> clubDtoList = new ArrayList<ReturnClubDto>();
 		for(int i = 0; i < clubList.size(); i++)
 			clubDtoList.add(mapper.mapToReturnClubDto(clubList.get(i)));
 		System.out.println("Returning all clubs!");
@@ -53,7 +54,7 @@ public class ClubEJB {
 			return new Pair<Integer, List<ReturnPlayerDto>>(404, null);
 		}
 		Set<Player> players = club.getPlayers();
-		List<ReturnPlayerDto> playerDtoList = new ArrayList();
+		List<ReturnPlayerDto> playerDtoList = new ArrayList<ReturnPlayerDto>();
 		for(Player player : players)
 			playerDtoList.add(mapper.mapToReturnPlayerDto(player));
 		System.out.println("Returning players from club with id = " + idc + "!");
@@ -68,12 +69,12 @@ public class ClubEJB {
 			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, List<ReturnGameDto>>(404, null);
 		}
-		Set<Game> games = club.getHomeMatches();
-		List<ReturnGameDto> gameDtoList = new ArrayList();
-		for(Game game : games)
-			gameDtoList.add(mapper.mapToReturnGameDto(game));
+		Set<Game> matches = club.getHomeMatches();
+		List<ReturnGameDto> matchDtoList = new ArrayList<ReturnGameDto>();
+		for(Game match : matches)
+			matchDtoList.add(mapper.mapToReturnGameDto(match));
 		System.out.println("Returning home matches of club with id = " + idc + "!");
-		return new Pair<Integer, List<ReturnGameDto>>(200, gameDtoList);
+		return new Pair<Integer, List<ReturnGameDto>>(200, matchDtoList);
 	}
 	
 	public Pair<Integer, List<ReturnGameDto>> getClubAwayMatches(long idc) {
@@ -84,12 +85,12 @@ public class ClubEJB {
 			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, List<ReturnGameDto>>(404, null);
 		}
-		Set<Game> games = club.getAwayMatches();
-		List<ReturnGameDto> gameDtoList = new ArrayList();
-		for(Game game : games)
-			gameDtoList.add(mapper.mapToReturnGameDto(game));
+		Set<Game> matches = club.getAwayMatches();
+		List<ReturnGameDto> matchDtoList = new ArrayList<ReturnGameDto>();
+		for(Game match : matches)
+			matchDtoList.add(mapper.mapToReturnGameDto(match));
 		System.out.println("Returning away matches of club with id = " + idc + "!");
-		return new Pair<Integer, List<ReturnGameDto>>(200, gameDtoList);
+		return new Pair<Integer, List<ReturnGameDto>>(200, matchDtoList);
 	}
 	
 	public Pair<Integer, String> createClub(CreateClubDto clubDto) {
@@ -133,6 +134,6 @@ public class ClubEJB {
 		}
 		em.remove(club);
 		System.out.println("Club deleted!");
-		return new Pair<Integer, String>(200, "Club deleted");
+		return new Pair<Integer, String>(200, "Club deleted.");
 	}
 }

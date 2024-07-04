@@ -1,7 +1,6 @@
 package pl.take.football_league.rest;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -17,7 +16,6 @@ import javax.ws.rs.core.Response;
 import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
 import pl.take.football_league.ejb.*;
-import pl.take.football_league.entities.*;
 
 @Path("/clubs")
 @Consumes({ "application/json" })
@@ -95,6 +93,8 @@ public class ClubREST {
 				return Response.status(Response.Status.OK).entity(entity).build();
 			case 201:
 				return Response.status(Response.Status.CREATED).entity(entity).build();
+			case 400:
+				return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
 			case 404:
 				return Response.status(Response.Status.NOT_FOUND).entity("Club with given id does not exist.").build();
 			default:

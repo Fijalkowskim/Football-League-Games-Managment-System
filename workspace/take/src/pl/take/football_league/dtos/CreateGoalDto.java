@@ -5,7 +5,7 @@ public class CreateGoalDto {
     Boolean ownGoal;
     Long scorerId;
     Long assistantId;
-    Long gameId;
+    Long matchId;
     
 	public Integer getMinute() {
 		return minute;
@@ -39,11 +39,11 @@ public class CreateGoalDto {
 		this.assistantId = assistantId;
 	}
 	
-	public Long getGameId() {
-		return gameId;
+	public Long getMatchId() {
+		return matchId;
 	}
 	
-	public void setGameId(Long gameId) {
-		this.gameId = gameId;
+	public void setMatchId(Long matchId) {
+		this.matchId = matchId;
 	}
 }

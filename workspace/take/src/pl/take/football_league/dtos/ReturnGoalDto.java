@@ -6,7 +6,7 @@ public class ReturnGoalDto {
     boolean ownGoal;
     String scorer;
     String assistant;
-    String game;
+    String match;
     
 	public long getId() {
 		return id;
@@ -48,11 +48,11 @@ public class ReturnGoalDto {
 		this.assistant = assistant;
 	}
 	
-	public String getGame() {
-		return game;
+	public String getMatch() {
+		return match;
 	}
 	
-	public void setGame(String game) {
-		this.game = game;
+	public void setMatch(String game) {
+		this.match = game;
 	}
 }

@@ -15,78 +15,71 @@ import javax.ws.rs.core.Response;
 
 import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
-import pl.take.football_league.ejb.PlayerEJB;
+import pl.take.football_league.ejb.GoalEJB;
 
-@Path("/players")
+@Path("/goals")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
 
 //@Consumes({ "application/xml" })
 //@Produces({ "application/xml" })
-public class PlayerREST {
-	
+public class GoalREST {
+
 	@EJB
-	PlayerEJB playerBean;
+	GoalEJB goalBean;
 
 	
 	@GET
-	public Response getPlayers() {
-		Pair<Integer, List<ReturnPlayerDto>> result = playerBean.getPlayers();
+	public Response getGoals() {
+		Pair<Integer, List<ReturnGoalDto>> result = goalBean.getGoals();
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
 	@Path("/{idc}")
-	public Response getPlayer(@PathParam("idc") long idc) {
-		Pair<Integer, ReturnPlayerDto> result = playerBean.getPlayer(idc);
+	public Response getGoal(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnGoalDto> result = goalBean.getGoal(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
-	@Path("/{idc}/club")
-	public Response getPlayerClub(@PathParam("idc") long idc) {
-		Pair<Integer, ReturnClubDto> result = playerBean.getPlayerClub(idc);
+	@Path("/{idc}/match")
+	public Response getGoalMatch(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnGameDto> result = goalBean.getGoalMatch(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
-	@Path("/{idc}/matches")
-	public Response getPlayerMatches(@PathParam("idc") long idc) {
-		Pair<Integer, List<ReturnGameDto>> result = playerBean.getPlayerMatches(idc);
+	@Path("/{idc}/scorer")
+	public Response getGoalScorer(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnPlayerDto> result = goalBean.getGoalScorer(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
-	@Path("/{idc}/goals")
-	public Response getPlayerGoals(@PathParam("idc") long idc) {
-		Pair<Integer, List<ReturnGoalDto>> result = playerBean.getPlayerGoals(idc);
-		return getResponse(result.getFirst(), result.getSecond());
-	}
-	
-	@GET
-	@Path("/{idc}/assists")
-	public Response getPlayerAssists(@PathParam("idc") long idc) {
-		Pair<Integer, List<ReturnGoalDto>> result = playerBean.getPlayerAssists(idc);
+	@Path("/{idc}/assistant")
+	public Response getGoalAssistant(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnPlayerDto> result = goalBean.getGoalAssistant(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@POST
-	public Response createPlayer(CreatePlayerDto playerDto) {
-		Pair<Integer, String> result = playerBean.createPlayer(playerDto);
+	public Response createGoal(CreateGoalDto goalDto) {
+		Pair<Integer, String> result = goalBean.createGoal(goalDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 
 	@PUT
 	@Path("/{idc}")
-	public Response updatePlayer(@PathParam("idc") long idc, UpdatePlayerDto playerDto) {
-		Pair<Integer, ReturnPlayerDto> result = playerBean.updatePlayer(idc, playerDto);
+	public Response updateGoal(@PathParam("idc") long idc, UpdateGoalDto goalDto) {
+		Pair<Integer, ReturnGoalDto> result = goalBean.updateGoal(idc, goalDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 
 	@DELETE
 	@Path("/{idc}")
-	public Response deletePlayer(@PathParam("idc") long idc) {
-		Pair<Integer, String> result = playerBean.deletePlayer(idc);
+	public Response deleteGoal(@PathParam("idc") long idc) {
+		Pair<Integer, String> result = goalBean.deleteGoal(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 
@@ -102,7 +95,7 @@ public class PlayerREST {
 			case 400:
 				return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
 			case 404:
-				return Response.status(Response.Status.NOT_FOUND).entity("Player with given id does not exist.").build();
+				return Response.status(Response.Status.NOT_FOUND).entity("Goal with given id does not exist.").build();
 			default:
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong.").build();
 		}

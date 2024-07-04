@@ -14,7 +14,7 @@ public class Goal {
     @ManyToOne
     Player assistant;
     @ManyToOne
-    Game game;
+    Game match;
 
     public long getId() {
         return id;
@@ -56,11 +56,11 @@ public class Goal {
         this.assistant = assistant;
     }
 
-    public Game getGame() {
-        return game;
+    public Game getMatch() {
+        return match;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setMatch(Game match) {
+        this.match = match;
     }
 }

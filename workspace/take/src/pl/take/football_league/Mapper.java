@@ -87,7 +87,7 @@ public class Mapper {
 		goalDto.setOwnGoal(goal.isOwnGoal());
 		goalDto.setScorer("/goals/" + goal.getId() + "/scorer");
 		goalDto.setAssistant("/goals/" + goal.getId() + "/assistant");
-		goalDto.setGame("/goals/" + goal.getId() + "/match");
+		goalDto.setMatch("/goals/" + goal.getId() + "/match");
 		return goalDto;
 	}
 	

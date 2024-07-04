@@ -15,78 +15,78 @@ import javax.ws.rs.core.Response;
 
 import pl.take.football_league.Pair;
 import pl.take.football_league.dtos.*;
-import pl.take.football_league.ejb.PlayerEJB;
+import pl.take.football_league.ejb.GameEJB;
 
-@Path("/players")
+@Path("/matches")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
 
 //@Consumes({ "application/xml" })
 //@Produces({ "application/xml" })
-public class PlayerREST {
-	
+public class GameREST {
+
 	@EJB
-	PlayerEJB playerBean;
+	GameEJB gameBean;
 
 	
 	@GET
-	public Response getPlayers() {
-		Pair<Integer, List<ReturnPlayerDto>> result = playerBean.getPlayers();
+	public Response getMatches() {
+		Pair<Integer, List<ReturnGameDto>> result = gameBean.getMatches();
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
 	@Path("/{idc}")
-	public Response getPlayer(@PathParam("idc") long idc) {
-		Pair<Integer, ReturnPlayerDto> result = playerBean.getPlayer(idc);
+	public Response getMatch(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnGameDto> result = gameBean.getMatch(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
-	@Path("/{idc}/club")
-	public Response getPlayerClub(@PathParam("idc") long idc) {
-		Pair<Integer, ReturnClubDto> result = playerBean.getPlayerClub(idc);
+	@Path("/{idc}/homeClub")
+	public Response getMatchHomeClub(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnClubDto> result = gameBean.getMatchHomeClub(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
-	@Path("/{idc}/matches")
-	public Response getPlayerMatches(@PathParam("idc") long idc) {
-		Pair<Integer, List<ReturnGameDto>> result = playerBean.getPlayerMatches(idc);
+	@Path("/{idc}/awayClub")
+	public Response getMatchAwayClub(@PathParam("idc") long idc) {
+		Pair<Integer, ReturnClubDto> result = gameBean.getMatchAwayClub(idc);
+		return getResponse(result.getFirst(), result.getSecond());
+	}
+	
+	@GET
+	@Path("/{idc}/players")
+	public Response getMatchPlayers(@PathParam("idc") long idc) {
+		Pair<Integer, List<ReturnPlayerDto>> result = gameBean.getMatchPlayers(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@GET
 	@Path("/{idc}/goals")
-	public Response getPlayerGoals(@PathParam("idc") long idc) {
-		Pair<Integer, List<ReturnGoalDto>> result = playerBean.getPlayerGoals(idc);
-		return getResponse(result.getFirst(), result.getSecond());
-	}
-	
-	@GET
-	@Path("/{idc}/assists")
-	public Response getPlayerAssists(@PathParam("idc") long idc) {
-		Pair<Integer, List<ReturnGoalDto>> result = playerBean.getPlayerAssists(idc);
+	public Response getMatchGoals(@PathParam("idc") long idc) {
+		Pair<Integer, List<ReturnGoalDto>> result = gameBean.getMatchGoals(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	
 	@POST
-	public Response createPlayer(CreatePlayerDto playerDto) {
-		Pair<Integer, String> result = playerBean.createPlayer(playerDto);
+	public Response createMatch(CreateGameDto gameDto) {
+		Pair<Integer, String> result = gameBean.createMatch(gameDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 
 	@PUT
 	@Path("/{idc}")
-	public Response updatePlayer(@PathParam("idc") long idc, UpdatePlayerDto playerDto) {
-		Pair<Integer, ReturnPlayerDto> result = playerBean.updatePlayer(idc, playerDto);
+	public Response updateMatch(@PathParam("idc") long idc, UpdateGameDto gameDto) {
+		Pair<Integer, ReturnGameDto> result = gameBean.updateMatch(idc, gameDto);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 
 	@DELETE
 	@Path("/{idc}")
-	public Response deletePlayer(@PathParam("idc") long idc) {
-		Pair<Integer, String> result = playerBean.deletePlayer(idc);
+	public Response deleteMatch(@PathParam("idc") long idc) {
+		Pair<Integer, String> result = gameBean.deleteMatch(idc);
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 
@@ -102,7 +102,7 @@ public class PlayerREST {
 			case 400:
 				return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
 			case 404:
-				return Response.status(Response.Status.NOT_FOUND).entity("Player with given id does not exist.").build();
+				return Response.status(Response.Status.NOT_FOUND).entity("Game with given id does not exist.").build();
 			default:
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong.").build();
 		}

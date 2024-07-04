@@ -21,8 +21,9 @@ public class PlayerEJB {
 	
 	public Pair<Integer, List<ReturnPlayerDto>> getPlayers() {
 		System.out.println("Getting all players!");
+		@SuppressWarnings("unchecked")
 		List<Player> playerList = em.createQuery("select p from Player p").getResultList();
-		List<ReturnPlayerDto> playerDtoList = new ArrayList();
+		List<ReturnPlayerDto> playerDtoList = new ArrayList<ReturnPlayerDto>();
 		for(int i = 0; i < playerList.size(); i++)
 			playerDtoList.add(mapper.mapToReturnPlayerDto(playerList.get(i)));
 		System.out.println("Returning all players!");
@@ -64,12 +65,12 @@ public class PlayerEJB {
 			System.out.println("Player with given id does not exist!");
 			return new Pair<Integer, List<ReturnGameDto>>(404, null);
 		}
-		Set<Game> games = player.getGames();
-		List<ReturnGameDto> gameDtoList = new ArrayList();
-		for(Game game : games)
-			gameDtoList.add(mapper.mapToReturnGameDto(game));
+		Set<Game> matches = player.getMatches();
+		List<ReturnGameDto> matchDtoList = new ArrayList<ReturnGameDto>();
+		for(Game match : matches)
+			matchDtoList.add(mapper.mapToReturnGameDto(match));
 		System.out.println("Returning matches of player with id = " + idc + "!");
-		return new Pair<Integer, List<ReturnGameDto>>(200, gameDtoList);
+		return new Pair<Integer, List<ReturnGameDto>>(200, matchDtoList);
 	}
 	
 	public Pair<Integer, List<ReturnGoalDto>> getPlayerGoals(long idc) {
@@ -81,7 +82,7 @@ public class PlayerEJB {
 			return new Pair<Integer, List<ReturnGoalDto>>(404, null);
 		}
 		Set<Goal> goals = player.getGoals();
-		List<ReturnGoalDto> goalDtoList = new ArrayList();
+		List<ReturnGoalDto> goalDtoList = new ArrayList<ReturnGoalDto>();
 		for(Goal goal : goals)
 			goalDtoList.add(mapper.mapToReturnGoalDto(goal));
 		System.out.println("Returning goals of player with id = " + idc + "!");
@@ -97,7 +98,7 @@ public class PlayerEJB {
 			return new Pair<Integer, List<ReturnGoalDto>>(404, null);
 		}
 		Set<Goal> assists = player.getAssists();
-		List<ReturnGoalDto> assistDtoList = new ArrayList();
+		List<ReturnGoalDto> assistDtoList = new ArrayList<ReturnGoalDto>();
 		for(Goal assist : assists)
 			assistDtoList.add(mapper.mapToReturnGoalDto(assist));
 		System.out.println("Returning assists of player with id = " + idc + "!");
@@ -155,8 +156,13 @@ public class PlayerEJB {
 			System.out.println("Player with given id does not exist!");
 			return new Pair<Integer, String>(404, "");
 		}
+		/*Set<Player> players = player.getClub().getPlayers();
+		players.remove(player);
+		player.getClub().setPlayers(players);*/
+		for(Game match : player.getMatches())
+			em.remove(match);
 		em.remove(player);
 		System.out.println("Player deleted!");
-		return new Pair<Integer, String>(200, "Player deleted");
+		return new Pair<Integer, String>(200, "Player deleted.");
 	}
 }

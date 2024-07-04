@@ -5,8 +5,8 @@ import java.util.Date;
 public class ReturnGameDto {
 	long id;
 	Date date;
-    int awayResult;
-    int homeResult;
+    Integer awayResult;
+    Integer homeResult;
     String location;
     boolean played;
     String homeClub;
@@ -30,19 +30,19 @@ public class ReturnGameDto {
 		this.date = date;
 	}
 	
-	public int getAwayResult() {
+	public Integer getAwayResult() {
 		return awayResult;
 	}
 	
-	public void setAwayResult(int awayResult) {
+	public void setAwayResult(Integer awayResult) {
 		this.awayResult = awayResult;
 	}
 	
-	public int getHomeResult() {
+	public Integer getHomeResult() {
 		return homeResult;
 	}
 	
-	public void setHomeResult(int homeResult) {
+	public void setHomeResult(Integer homeResult) {
 		this.homeResult = homeResult;
 	}
 	
