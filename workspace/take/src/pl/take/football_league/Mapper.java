@@ -73,9 +73,6 @@ public class Mapper {
 		Game game = new Game();
 		game.setDate(gameDto.getDate());
 		game.setLocation(gameDto.getLocation());
-		game.setPlayed(gameDto.isPlayed());
-		game.setAwayResult(gameDto.getAwayResult());
-		game.setHomeResult(gameDto.getHomeResult());
 		return game;
 	}
 	

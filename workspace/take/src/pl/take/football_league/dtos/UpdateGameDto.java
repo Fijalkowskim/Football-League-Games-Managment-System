@@ -6,8 +6,6 @@ import java.util.List;
 
 public class UpdateGameDto {
 	Date date;
-    Integer awayResult;
-    Integer homeResult;
     String location;
     Boolean played;
     List<Long> players = new ArrayList<Long>();
@@ -18,22 +16,6 @@ public class UpdateGameDto {
 	
 	public void setDate(Date date) {
 		this.date = date;
-	}
-	
-	public Integer getAwayResult() {
-		return awayResult;
-	}
-	
-	public void setAwayResult(Integer awayResult) {
-		this.awayResult = awayResult;
-	}
-	
-	public Integer getHomeResult() {
-		return homeResult;
-	}
-	
-	public void setHomeResult(Integer homeResult) {
-		this.homeResult = homeResult;
 	}
 	
 	public String getLocation() {

@@ -110,7 +110,7 @@ public class GameEJB {
 	
 	public Pair<Integer, String> createMatch(CreateGameDto matchDto) {
 		System.out.println("Creating match!");
-		if(matchDto.getDate() == null || matchDto.getLocation() == null || matchDto.isPlayed() == null ||
+		if(matchDto.getDate() == null || matchDto.getLocation() == null ||
 				matchDto.getHomeClubId() == null || matchDto.getAwayClubId() == null)
 		{
 			System.out.println("Dto contains null values!");
@@ -140,6 +140,9 @@ public class GameEJB {
 			return new Pair<Integer, String>(400, "The date of the match is invalid.");
 		}
 		Game match = mapper.mapToFlatGame(matchDto);
+		match.setPlayed(false);
+		match.setHomeResult(null);
+		match.setAwayResult(null);
 		match.setHomeClub(homeClub);
 		Set<Game> homeMatches = homeClub.getHomeMatches();
 		homeMatches.add(match);
@@ -225,9 +228,6 @@ public class GameEJB {
 			}
 			match.setDate(updateMatchDto.getDate());
 		}
-		if(updateMatchDto.getHomeResult() != null) match.setHomeResult(updateMatchDto.getHomeResult());
-		if(updateMatchDto.getAwayResult() != null) match.setAwayResult(updateMatchDto.getAwayResult());
-		if(updateMatchDto.isPlayed() != null) match.setPlayed(updateMatchDto.isPlayed());
 		if(updateMatchDto.getLocation() != null) match.setLocation(updateMatchDto.getLocation());
 		if(!updateMatchDto.getPlayers().isEmpty())
 		{
@@ -281,6 +281,36 @@ public class GameEJB {
 					player.setMatches(matches);
 				}
 			}
+		}
+		if(updateMatchDto.isPlayed() != null)
+		{
+			if(updateMatchDto.isPlayed())
+			{
+				Integer homeResult = 0;
+				Integer awayResult = 0;
+				Set<Goal> goals = match.getGoals();
+				for(Goal goal : goals)
+				{
+					if(goal.getScorer().getClub().getId() == match.getHomeClub().getId())
+					{
+						if(!goal.isOwnGoal()) homeResult++;
+						else awayResult++;
+					}
+					else
+					{
+						if(!goal.isOwnGoal()) awayResult++;
+						else homeResult++;
+					}
+				}
+				match.setHomeResult(homeResult);
+				match.setAwayResult(awayResult);
+			}
+			else
+			{
+				match.setHomeResult(null);
+				match.setAwayResult(null);
+			}
+			match.setPlayed(updateMatchDto.isPlayed());
 		}
 		match = em.merge(match);
 		System.out.println("Match updated!");

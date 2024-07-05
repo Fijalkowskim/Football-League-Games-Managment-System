@@ -6,10 +6,7 @@ import java.util.List;
 
 public class CreateGameDto {
     Date date;
-    Integer awayResult;
-    Integer homeResult;
     String location;
-    Boolean played;
     Long homeClubId;
     Long awayClubId;
     List<Long> players = new ArrayList<Long>();
@@ -22,22 +19,6 @@ public class CreateGameDto {
         this.date = date;
     }
 
-    public Integer getAwayResult() {
-        return awayResult;
-    }
-
-    public void setAwayResult(Integer awayResult) {
-        this.awayResult = awayResult;
-    }
-
-    public Integer getHomeResult() {
-        return homeResult;
-    }
-
-    public void setHomeResult(Integer homeResult) {
-        this.homeResult = homeResult;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -45,14 +26,6 @@ public class CreateGameDto {
     public void setLocation(String location) {
         this.location = location;
     }
-
-	public Boolean isPlayed() {
-		return played;
-	}
-
-	public void setPlayed(Boolean played) {
-		this.played = played;
-	}
 
 	public Long getHomeClubId() {
 		return homeClubId;
