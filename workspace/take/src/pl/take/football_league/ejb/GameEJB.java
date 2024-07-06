@@ -271,7 +271,7 @@ public class GameEJB {
 				if(numberOfAwayClubPlayers < 11 || numberOfAwayClubPlayers > 16)
 				{
 					System.out.println("Number of players playing for away club must be between 11 and 16!");
-					return new Pair<Integer, String>(400, "Number of players playing for away club must be between 11 and 16!");
+					return new Pair<Integer, String>(400, "Number of players playing for away club must be between 11 and 16.");
 				}
 				match.setPlayers(players);
 				for(Player player : players)
@@ -286,6 +286,11 @@ public class GameEJB {
 		{
 			if(updateMatchDto.isPlayed())
 			{
+				if(match.getPlayers().isEmpty())
+				{
+					System.out.println("Cannot set the played status if there are not assigned players!");
+					return new Pair<Integer, String>(400, "Cannot set the played status if there are not assigned players.");
+				}
 				Integer homeResult = 0;
 				Integer awayResult = 0;
 				Set<Goal> goals = match.getGoals();
