@@ -1,3 +1,6 @@
+import { Player } from "../models/Player";
+import { Game } from "../models/Game";
+import { Club } from "../models/Club";
 const examplePlayers = new Set([
   new Player(1, "John", "Doe", 10, "Forward"),
   new Player(2, "Jane", "Smith", 8, "Midfielder"),

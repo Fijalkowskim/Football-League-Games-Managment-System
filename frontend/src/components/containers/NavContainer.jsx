@@ -1,7 +1,7 @@
 import React from "react";
 import LoadingBar from "../general/LoadingBar";
 import NavCard from "./NavCard";
-function NavContainer({ data, isLoading, navigationPrefix }) {
+function NavContainer({ data, isLoading, navigationPrefix, CardContent }) {
   return (
     <>
       {isLoading ? (
@@ -9,7 +9,14 @@ function NavContainer({ data, isLoading, navigationPrefix }) {
       ) : data === undefined || data.length <= 0 ? (
         <p>There is no data yet.</p>
       ) : (
-        data.map((entry) => <NavCard />)
+        data.map((entry) => (
+          <NavCard
+            navigationPrefix={navigationPrefix}
+            id={entry?.id}
+            CardContent={CardContent}
+            data={entry}
+          />
+        ))
       )}
     </>
   );

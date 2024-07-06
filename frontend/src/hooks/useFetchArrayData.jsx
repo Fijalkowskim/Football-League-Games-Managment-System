@@ -1,38 +1,28 @@
 import { useState, useEffect } from "react";
 import { useGlobalReloadContext } from "../context/general/GlobalReloadContext";
-
-export const useFetchArrayData = (
-  getMethod,
-  id,
-  refreshData,
-  setRefreshData
-) => {
+import api from "../api/api";
+import { usePopupContext } from "../context/PopupContext";
+export const useFetchArrayData = (apiUrl) => {
   const [data, setData] = useState();
   const [isPending, setIsPending] = useState(false);
   const { globalReload, setGlobalReload } = useGlobalReloadContext();
+  const { logError } = usePopupContext();
 
   useEffect(() => {
     const loadData = async () => {
       setIsPending(true);
       try {
-        var loadedData;
-        if (id !== undefined) {
-          const parsedId = parseInt(id);
-          loadedData = await getMethod(parsedId);
-        } else {
-          loadedData = await getMethod();
-        }
-        setData(loadedData);
-        if (setRefreshData) setRefreshData(false);
+        const res = await api.get(apiUrl);
+        setData(res);
         if (globalReload) setGlobalReload(false);
       } catch (err) {
-        console.log(err);
+        logError(err);
         setData([]);
       }
       setIsPending(false);
     };
     loadData();
-  }, [refreshData, id, globalReload]);
+  }, [globalReload]);
 
   return { data, isPending };
 };

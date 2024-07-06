@@ -1,9 +1,11 @@
 import React from "react";
+import PageWrapper from "./PageWrapper";
+import NavContainer from "../components/containers/NavContainer";
 
 function Goals() {
   return (
-    <PageWrapper>
-      <div></div>
+    <PageWrapper header={"List of goals"}>
+      <NavContainer />
     </PageWrapper>
   );
 }

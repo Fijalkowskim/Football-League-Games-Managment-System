@@ -1,9 +1,11 @@
 import React from "react";
+import PageWrapper from "./PageWrapper";
+import NavContainer from "../components/containers/NavContainer";
 
 function Players() {
   return (
-    <PageWrapper>
-      <div></div>
+    <PageWrapper header={"List of players"}>
+      <NavContainer />
     </PageWrapper>
   );
 }
