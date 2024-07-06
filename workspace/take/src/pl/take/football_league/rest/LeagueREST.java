@@ -28,7 +28,7 @@ public class LeagueREST {
 	@GET
 	@Path("/table")
 	public Response getTable() {
-		Pair<Integer, List<ReturnRecordTableDto>> result = leagueBean.getTable();
+		Pair<Integer, List<ReturnRecordLeagueTableDto>> result = leagueBean.getTable();
 		return getResponse(result.getFirst(), result.getSecond());
 	}
 	

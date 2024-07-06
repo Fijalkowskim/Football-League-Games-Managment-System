@@ -1,6 +1,6 @@
 package pl.take.football_league.dtos;
 
-public class ReturnRecordTableDto {
+public class ReturnRecordLeagueTableDto {
 	Long clubId;
 	Integer place;
 	Integer numberOfMatches;
