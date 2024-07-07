@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useDebugValue, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DetailsPageWrapper from "./DetailsPageWrapper";
 import { useClub } from "../hooks/exampleDataHooks/useClub";
 import ClubCard from "../components/containers/ClubCard";
+import { fetchClubDetails } from "../hooks/fetchClubDetails";
+import { usePopupContext } from "../context/PopupContext";
 
 function ClubDetails() {
   const { id } = useParams();
   const { data, isPending } = useClub("/club", id);
+  const { logError } = usePopupContext();
+
+  const [players, setPlayers] = useState([]);
+  const [homeMatches, setHomeMatches] = useState([]);
+  const [awayMatches, setAwayMatches] = useState([]);
+
+  useEffect(() => {
+    const loadDetails = async () => {
+      if (data) {
+        const { players, homeMatches, awayMatches } = await fetchClubDetails(
+          data,
+          logError
+        );
+        setPlayers(players);
+        setHomeMatches(homeMatches);
+        setAwayMatches(awayMatches);
+      }
+    };
+    //loadDetails();
+  }, [data]);
   return (
     <DetailsPageWrapper
       header={`Club details`}
