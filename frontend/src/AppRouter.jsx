@@ -4,12 +4,14 @@ import Navbar from "./components/navbar/Navbar";
 import ScrollToTop from "./components/general/ScrollToTop";
 import Clubs from "./pages/clubs/Clubs";
 import ClubDetails from "./pages/clubs/ClubDetails";
-import Players from "./pages/Players";
+import Players from "./pages/players/Players";
 import Games from "./pages/games/Games";
 import Goals from "./pages/Goals";
 import CreateClub from "./pages/clubs/CreateClub";
 import GameDetails from "./pages/games/GameDetails";
 import CreateGame from "./pages/games/CreateGame";
+import PlayerDetails from "./pages/players/PlayerDetails";
+import CreatePlayer from "./pages/players/CreatePlayer";
 function AppRouter() {
   return (
     <>
@@ -22,6 +24,9 @@ function AppRouter() {
         <Route path="/club/edit/:id" element={<CreateClub edit={true} />} />
 
         <Route path="/players" element={<Players />} />
+        <Route path="/player/:id" element={<PlayerDetails />} />
+        <Route path="/player/new" element={<CreatePlayer edit={false} />} />
+        <Route path="/player/edit/:id" element={<CreatePlayer edit={true} />} />
 
         <Route path="/games" element={<Games />} />
         <Route path="/game/:id" element={<GameDetails />} />

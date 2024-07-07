@@ -10,7 +10,12 @@ function ScrollableNavContainer({
   className,
 }) {
   return (
-    <div className={cn("h-fit max-h-[30rem] overflow-y-scroll p-2", className)}>
+    <div
+      className={cn(
+        "h-fit max-h-[30rem] overflow-y-scroll p-2 w-screen max-w-4xl bg-primary-900/20 rounded-md",
+        className
+      )}
+    >
       <NavContainer
         data={data}
         isLoading={isLoading}
