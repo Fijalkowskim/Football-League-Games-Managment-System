@@ -218,7 +218,7 @@ public class GameEJB {
 			System.out.println("Match with given id does not exist!");
 			return new Pair<Integer, String>(404, null);
 		}
-		if(updateMatchDto.getDate() != null)
+		if(updateMatchDto.getDate() != null && updateMatchDto.getDate() != match.getDate())
 		{
 			Date youngerClubDate = (match.getHomeClub().getDateOfCreation().compareTo(match.getAwayClub().getDateOfCreation()) > 0 ? match.getHomeClub().getDateOfCreation() : match.getAwayClub().getDateOfCreation());
 			if(match.getDate().compareTo(Calendar.getInstance().getTime()) > 0 || match.getDate().compareTo(youngerClubDate) < 0)
@@ -228,7 +228,7 @@ public class GameEJB {
 			}
 			match.setDate(updateMatchDto.getDate());
 		}
-		if(updateMatchDto.getLocation() != null) match.setLocation(updateMatchDto.getLocation());
+		if(updateMatchDto.getLocation() != null && updateMatchDto.getLocation() != match.getLocation()) match.setLocation(updateMatchDto.getLocation());
 		if(!updateMatchDto.getPlayers().isEmpty())
 		{
 			if(updateMatchDto.getPlayers().size() < 22 || updateMatchDto.getPlayers().size() > 32)
@@ -282,7 +282,7 @@ public class GameEJB {
 				}
 			}
 		}
-		if(updateMatchDto.isPlayed() != null)
+		if(updateMatchDto.isPlayed() != null && updateMatchDto.isPlayed() != match.isPlayed())
 		{
 			if(updateMatchDto.isPlayed())
 			{

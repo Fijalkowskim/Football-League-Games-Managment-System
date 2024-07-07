@@ -111,6 +111,11 @@ public class GoalEJB {
 			System.out.println("Match with given id does not exist!");
 			return new Pair<Integer, String>(400, "Match with given id does not exist.");
 		}
+		if(match.isPlayed())
+		{
+			System.out.println("Goal cannot be created for a played match!");
+			return new Pair<Integer, String>(400, "Goal cannot be created for a played match.");
+		}
 		Player scorer = em.find(Player.class, goalDto.getScorerId());
 		if(scorer == null)
 		{
@@ -160,7 +165,7 @@ public class GoalEJB {
 			System.out.println("Goal with given id does not exist!");
 			return new Pair<Integer, String>(404, null);
 		}
-		if(updateGoalDto.getMinute() != null)
+		if(updateGoalDto.getMinute() != null && updateGoalDto.getMinute() != goal.getMinute())
 		{
 			if(updateGoalDto.getMinute() < 1 || updateGoalDto.getMinute() > 120)
 			{
@@ -169,7 +174,7 @@ public class GoalEJB {
 			}
 			goal.setMinute(updateGoalDto.getMinute());
 		}
-		if(updateGoalDto.isOwnGoal() != null) goal.setOwnGoal(updateGoalDto.isOwnGoal());
+		if(updateGoalDto.isOwnGoal() != null && updateGoalDto.isOwnGoal() != goal.isOwnGoal()) goal.setOwnGoal(updateGoalDto.isOwnGoal());
 		goal = em.merge(goal);
 		System.out.println("Goal updated!");
 		return new Pair<Integer, String>(200, "Goal updated.");

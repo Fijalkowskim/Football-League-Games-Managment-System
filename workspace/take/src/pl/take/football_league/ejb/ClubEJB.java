@@ -121,9 +121,9 @@ public class ClubEJB {
 			System.out.println("Club with given id does not exist!");
 			return new Pair<Integer, String>(404, null);
 		}
-		if(updateClubDto.getName() != null) club.setName(updateClubDto.getName());
-		if(updateClubDto.getLocation() != null) club.setLocation(updateClubDto.getLocation());
-		if(updateClubDto.getDateOfCreation() != null)
+		if(updateClubDto.getName() != null && updateClubDto.getName() != club.getName()) club.setName(updateClubDto.getName());
+		if(updateClubDto.getLocation() != null && updateClubDto.getLocation() != club.getLocation()) club.setLocation(updateClubDto.getLocation());
+		if(updateClubDto.getDateOfCreation() != null && updateClubDto.getDateOfCreation() != club.getDateOfCreation())
 		{
 			if(updateClubDto.getDateOfCreation().compareTo(Calendar.getInstance().getTime()) > 0)
 			{

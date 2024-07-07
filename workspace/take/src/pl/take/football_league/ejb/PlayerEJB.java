@@ -159,9 +159,9 @@ public class PlayerEJB {
 			System.out.println("Player with given id does not exist!");
 			return new Pair<Integer, String>(404, null);
 		}
-		if(updatePlayerDto.getName() != null) player.setName(updatePlayerDto.getName());
-		if(updatePlayerDto.getSurname() != null) player.setSurname(updatePlayerDto.getSurname());
-		if(updatePlayerDto.getNumber() != null)
+		if(updatePlayerDto.getName() != null && updatePlayerDto.getName() != player.getName()) player.setName(updatePlayerDto.getName());
+		if(updatePlayerDto.getSurname() != null && updatePlayerDto.getSurname() != player.getSurname()) player.setSurname(updatePlayerDto.getSurname());
+		if(updatePlayerDto.getNumber() != null && updatePlayerDto.getNumber() != player.getNumber())
 		{
 			Set<Integer> numbers = new HashSet<Integer>();
 			for(Player clubPlayer : player.getClub().getPlayers())
@@ -173,7 +173,7 @@ public class PlayerEJB {
 			}
 			player.setNumber(updatePlayerDto.getNumber());
 		}
-		if(updatePlayerDto.getPosition() != null) player.setPosition(updatePlayerDto.getPosition());
+		if(updatePlayerDto.getPosition() != null && updatePlayerDto.getPosition() != player.getPosition()) player.setPosition(updatePlayerDto.getPosition());
 		player = em.merge(player);
 		System.out.println("Player updated!");
 		return new Pair<Integer, String>(200, "Player updated!");
