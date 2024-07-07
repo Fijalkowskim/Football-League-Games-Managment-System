@@ -1,20 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreatePageWrapper from "./CreatePageWrapper";
 import CustomButton from "../components/general/CustomButton";
 import { usePopupContext } from "../context/PopupContext";
 import api from "../api/api";
+import { useParams } from "react-router-dom";
 
-function CreateClub() {
+function CreateClub({ edit }) {
+  const { id } = useParams();
+
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [dateOfCreation, setDateOfCreation] = useState(new Date());
   const { logError, addMessage } = usePopupContext();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get(`/clubs/${id}`);
+        const club = res.data;
+        setName(club.name);
+        setLocation(club.location);
+        setDateOfCreation(club.dateOfCreation);
+      } catch (err) {
+        logError(err);
+      }
+    };
+    if (edit && id) {
+      fetchData();
+    }
+  }, [edit, id]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/clubs", { name, location, dateOfCreation });
+      const res =
+        edit && id
+          ? await api.put(`/clubs/${id}`, { name, location, dateOfCreation })
+          : await api.post("/clubs", { name, location, dateOfCreation });
       if (res) {
-        addMessage("Club created successfully");
+        addMessage(`Club ${edit ? "edited" : "created"} successfully`);
         setName("");
         setLocation("");
         setDateOfCreation(new Date());
@@ -24,7 +48,7 @@ function CreateClub() {
     }
   };
   return (
-    <CreatePageWrapper header={"New club"}>
+    <CreatePageWrapper header={edit ? "Edit club" : "New club"}>
       <form
         onSubmit={onSubmit}
         className="flex flex-col gap-2 items-center justify-center"

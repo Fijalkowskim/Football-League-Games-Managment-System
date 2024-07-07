@@ -16,7 +16,8 @@ function AppRouter() {
       <Routes>
         <Route path="/clubs" element={<Clubs />} />
         <Route path="/club/:id" element={<ClubDetails />} />
-        <Route path="/club/new" element={<CreateClub />} />
+        <Route path="/club/new" element={<CreateClub edit={false} />} />
+        <Route path="/club/edit/:id" element={<CreateClub edit={true} />} />
 
         <Route path="/players" element={<Players />} />
         <Route path="/games" element={<Games />} />
