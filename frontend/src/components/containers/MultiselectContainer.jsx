@@ -38,7 +38,7 @@ function MultiselectContainer({
               onClick={() => onCardClick(entry)}
               variant={"light"}
               className={` w-full gap-6 ${
-                selectedEntries.find((e) => e === entry.id)
+                selectedEntries?.find((e) => e === entry.id)
                   ? "bg-primary-200 hover:bg-primary-300"
                   : ""
               }`}

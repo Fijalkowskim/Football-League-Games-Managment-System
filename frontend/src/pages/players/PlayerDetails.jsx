@@ -45,7 +45,7 @@ function PlayerDetails() {
       const res = await api.delete(`/players/${data?.id}`);
       if (res) {
         addMessage("Player deleted successfully");
-        navigate("/");
+        navigate("/players");
       }
     } catch (err) {
       logError(err);

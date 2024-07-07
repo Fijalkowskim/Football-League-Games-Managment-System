@@ -14,30 +14,34 @@ function CreateGame({ edit }) {
 
   const [location, setLocation] = useState("");
   const [date, setDate] = useState(new Date());
-  const [homeClub, setHomeClub] = useState();
-  const [awayClub, setAwayClub] = useState();
+  const [homeClubId, setHomeClubId] = useState();
+  const [awayClubId, setAwayClubId] = useState();
   const [homePlayers, setHomePlayers] = useState([]);
   const [awayPlayers, setAwayPlayers] = useState([]);
+  const [played, setPlayed] = useState(false);
 
   const { logError, addMessage } = usePopupContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     setHomePlayers([]);
-  }, [homeClub]);
+  }, [homeClubId]);
   useEffect(() => {
     setAwayPlayers([]);
-  }, [awayClub]);
+  }, [awayClubId]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get(`/matches/${id}`);
+
         const game = res.data;
         setLocation(game.location);
         setDate(game.date);
-        setHomeClub(game.homeClubId);
-        setAwayClub(game.awayClubId);
+        const homeClub = await api.get(game.homeClub);
+        const awayClub = await api.get(game.awayClub);
+        setHomeClubId(homeClub.data.id);
+        setAwayClubId(awayClub.data.id);
       } catch (err) {
         logError(err);
       }
@@ -52,9 +56,13 @@ function CreateGame({ edit }) {
     const body = {
       location: location,
       date: date,
-      players: [...homePlayers, ...awayPlayers],
-      homeClubId: homeClub,
-      awayClubId: awayClub,
+      players:
+        homePlayers.length === 0 && awayPlayers.length === 0
+          ? undefined
+          : [...homePlayers, ...awayPlayers],
+      homeClubId: edit ? undefined : homeClubId,
+      awayClubId: edit ? undefined : awayClubId,
+      played: edit ? played : undefined,
     };
     console.log(body);
     try {
@@ -96,51 +104,70 @@ function CreateGame({ edit }) {
             setDate(e.target.value);
           }}
         />
+        {edit && (
+          <>
+            <label>Played:</label>
+            <input
+              type="checkbox"
+              value={played}
+              className="p-2 w-screen max-w-3xl"
+              onChange={(e) => {
+                setPlayed(e.target.checked);
+              }}
+            />
+          </>
+        )}
+        {!edit && (
+          <>
+            <label className="text-2xl">Home club:</label>
+            <div className=" max-h-[30rem] w-screen max-w-4xl">
+              <SelectContainer
+                apiUrl={`/clubs`}
+                setMethod={setHomeClubId}
+                CardContent={ClubCard}
+                prohibitedId={awayClubId}
+              />
+            </div>
+          </>
+        )}
+        {!edit && (
+          <>
+            <label className="text-2xl">Away club:</label>
+            <div className=" max-h-[30rem] w-screen max-w-4xl">
+              <SelectContainer
+                apiUrl={`/clubs`}
+                setMethod={setAwayClubId}
+                CardContent={ClubCard}
+                prohibitedId={homeClubId}
+              />
+            </div>
+          </>
+        )}
 
-        <label className="text-2xl">Home club:</label>
-        <div className=" max-h-[30rem] w-screen max-w-4xl">
-          <SelectContainer
-            apiUrl={`/clubs`}
-            setMethod={setHomeClub}
-            CardContent={ClubCard}
-            prohibitedId={awayClub}
-          />
-        </div>
-
-        <label className="text-2xl">Away club:</label>
-        <div className=" max-h-[30rem] w-screen max-w-4xl">
-          <SelectContainer
-            apiUrl={`/clubs`}
-            setMethod={setAwayClub}
-            CardContent={ClubCard}
-            prohibitedId={homeClub}
-          />
-        </div>
-
-        {homeClub && awayClub && (
+        {homeClubId && awayClubId && (
           <>
             <label className="text-2xl">Home players:</label>
             <div className=" max-h-[30rem] w-screen max-w-4xl">
               <MultiselectContainer
                 selectedEntries={homePlayers}
-                apiUrl={`/clubs/${homeClub}/players`}
+                apiUrl={`/clubs/${homeClubId}/players`}
                 setMethod={setHomePlayers}
-                maxEntries={11}
+                maxEntries={16}
                 CardContent={PlayerCard}
               />
             </div>
             <label className="text-2xl">Away players:</label>
             <div className=" max-h-[30rem] w-screen max-w-4xl">
               <MultiselectContainer
-                apiUrl={`/clubs/${awayClub}/players`}
+                apiUrl={`/clubs/${awayClubId}/players`}
                 setMethod={setAwayPlayers}
-                maxEntries={11}
+                maxEntries={16}
                 CardContent={PlayerCard}
               />
             </div>
           </>
         )}
-        <CustomButton>Create</CustomButton>
+        <CustomButton>{edit ? "Edit" : "Create"}</CustomButton>
       </form>
     </CreatePageWrapper>
   );

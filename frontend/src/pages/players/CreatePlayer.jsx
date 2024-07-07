@@ -111,7 +111,7 @@ function CreatePlayer({ edit }) {
           />
         </div>
 
-        <CustomButton>Create</CustomButton>
+        <CustomButton>{edit ? "Edit" : "Create"}</CustomButton>
       </form>
     </CreatePageWrapper>
   );

@@ -83,7 +83,7 @@ function CreateClub({ edit }) {
             setDateOfCreation(e.target.value);
           }}
         />
-        <CustomButton>Create</CustomButton>
+        <CustomButton>{edit ? "Edit" : "Create"}</CustomButton>
       </form>
     </CreatePageWrapper>
   );

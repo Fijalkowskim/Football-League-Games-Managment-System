@@ -6,12 +6,14 @@ import Clubs from "./pages/clubs/Clubs";
 import ClubDetails from "./pages/clubs/ClubDetails";
 import Players from "./pages/players/Players";
 import Games from "./pages/games/Games";
-import Goals from "./pages/Goals";
+import Goals from "./pages/goals/Goals";
 import CreateClub from "./pages/clubs/CreateClub";
 import GameDetails from "./pages/games/GameDetails";
 import CreateGame from "./pages/games/CreateGame";
 import PlayerDetails from "./pages/players/PlayerDetails";
 import CreatePlayer from "./pages/players/CreatePlayer";
+import GoalDetails from "./pages/goals/GoalDetails";
+import CreateGoal from "./pages/goals/CreateGoal";
 function AppRouter() {
   return (
     <>
@@ -34,6 +36,10 @@ function AppRouter() {
         <Route path="/game/edit/:id" element={<CreateGame edit={true} />} />
 
         <Route path="/goals" element={<Goals />} />
+        <Route path="/goal/:id" element={<GoalDetails />} />
+        <Route path="/goal/new" element={<CreateGoal edit={false} />} />
+        <Route path="/goal/edit/:id" element={<CreateGoal edit={true} />} />
+
         <Route path="*" element={<Navigate to="/clubs" />} />
       </Routes>
     </>
