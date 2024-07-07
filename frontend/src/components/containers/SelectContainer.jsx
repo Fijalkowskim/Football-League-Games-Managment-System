@@ -37,9 +37,12 @@ function SelectContainer({
           {data.map((entry) => (
             <CustomButton
               type="button"
+              variant={"light"}
               onClick={() => onCardClick(entry)}
               className={`w-full gap-6 ${
-                selected === entry.id ? "border-4 border-red-500" : ""
+                selected === entry.id
+                  ? " bg-primary-200 hover:bg-primary-300"
+                  : ""
               }`}
             >
               <CardContent data={entry} />

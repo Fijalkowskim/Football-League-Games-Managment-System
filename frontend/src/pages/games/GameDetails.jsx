@@ -60,7 +60,7 @@ function GameDetails() {
       editPageLink={"/game/edit"}
       deleteMethod={onDelete}
     >
-      <div className="flex flex-row items-center justify-center gap-8 bg-primary-100 p-4 rounded-md shadow-md">
+      <div className="flex flex-row items-center justify-center gap-8 bg-background-50 p-4 rounded-md shadow-md">
         <GameCard data={data} />
       </div>
       <h1 className="text-2xl">Players</h1>

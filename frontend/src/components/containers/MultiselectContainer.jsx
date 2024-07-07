@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFetchArrayData } from "../../hooks/useFetchArrayData";
 import LoadingBar from "../general/LoadingBar";
 import CustomButton from "../general/CustomButton";
 
 function MultiselectContainer({
+  selectedEntries,
   apiUrl,
   setMethod,
   CardContent,
@@ -11,18 +12,17 @@ function MultiselectContainer({
   header,
 }) {
   const { data, isPending } = useFetchArrayData(apiUrl);
-  const [selected, setSelected] = useState();
+
   const onCardClick = (cardData) => {
-    setMethod((prev) => {
-      if (prev.find((e) => e === cardData.id)) {
-        setSelected(prev.filter((id) => id !== cardData.id));
-        return prev.filter((id) => id !== cardData.id);
-      } else if (prev.length < maxEntries) {
-        setSelected([...prev, cardData.id]);
-        return [...prev, cardData.id];
-      }
-    });
+    setMethod((prev) =>
+      prev.find((e) => e === cardData.id)
+        ? prev.filter((id) => id !== cardData.id)
+        : prev.length < maxEntries
+        ? [...prev, cardData.id]
+        : prev
+    );
   };
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-2 px-4 bg-primary-900/30 rounded-md">
       {isPending ? (
@@ -36,9 +36,10 @@ function MultiselectContainer({
             <CustomButton
               type="button"
               onClick={() => onCardClick(entry)}
-              className={`w-full gap-6 ${
-                selected.find((e) => e === entry.id)
-                  ? "border-4 border-red-500"
+              variant={"light"}
+              className={` w-full gap-6 ${
+                selectedEntries.find((e) => e === entry.id)
+                  ? "bg-primary-200 hover:bg-primary-300"
                   : ""
               }`}
             >

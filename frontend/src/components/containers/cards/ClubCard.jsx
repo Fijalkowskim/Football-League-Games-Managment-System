@@ -15,9 +15,7 @@ function ClubCard({ data }) {
       </p>
       <p>
         <p>Date of creation:</p>{" "}
-        {typeof data.dateOfCreation === "string"
-          ? data.dateOfCreation
-          : data.dateOfCreation.toDateString()}
+        {typeof data.dateOfCreation === "string" ? data.dateOfCreation : ""}
       </p>
     </>
   );

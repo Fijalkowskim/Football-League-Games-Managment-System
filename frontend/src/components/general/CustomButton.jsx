@@ -12,6 +12,7 @@ const variants = cva(
         green: "bg-green-500 hover:bg-green-600 text-primary-50",
         action: "bg-action-600 hover:bg-action-700 text-text-50",
         error: "bg-red-600 hover:bg-red-700 text-text-50",
+        light: "bg-background-50 text-text-900 hover:bg-primary-200",
       },
     },
     defaultVariants: {

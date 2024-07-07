@@ -22,7 +22,7 @@ export const useFetchArrayData = (apiUrl) => {
       setIsPending(false);
     };
     loadData();
-  }, [globalReload]);
+  }, [globalReload, apiUrl]);
 
   return { data, isPending };
 };

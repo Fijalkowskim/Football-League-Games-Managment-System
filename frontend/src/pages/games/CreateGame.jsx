@@ -23,6 +23,13 @@ function CreateGame({ edit }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setHomePlayers([]);
+  }, [homeClub]);
+  useEffect(() => {
+    setAwayPlayers([]);
+  }, [awayClub]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get(`/matches/${id}`);
@@ -115,7 +122,8 @@ function CreateGame({ edit }) {
             <label className="text-2xl">Home players:</label>
             <div className=" max-h-[30rem] w-screen max-w-4xl">
               <MultiselectContainer
-                apiUrl={`/clubs/${homeClub.id}/players`}
+                selectedEntries={homePlayers}
+                apiUrl={`/clubs/${homeClub}/players`}
                 setMethod={setHomePlayers}
                 maxEntries={11}
                 CardContent={PlayerCard}
@@ -124,7 +132,7 @@ function CreateGame({ edit }) {
             <label className="text-2xl">Away players:</label>
             <div className=" max-h-[30rem] w-screen max-w-4xl">
               <MultiselectContainer
-                apiUrl={`/clubs/${awayClub.id}/players`}
+                apiUrl={`/clubs/${awayClub}/players`}
                 setMethod={setAwayPlayers}
                 maxEntries={11}
                 CardContent={PlayerCard}

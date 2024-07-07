@@ -24,7 +24,7 @@ export const useFetchData = (apiUrl, id, retrigger, setRetrigger) => {
       if (globalReload) setGlobalReload(false);
     };
     loadData();
-  }, [id, retrigger, globalReload]);
+  }, [id, retrigger, globalReload, apiUrl]);
 
   return { data, isPending };
 };
