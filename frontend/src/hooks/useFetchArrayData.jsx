@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGlobalReloadContext } from "../context/general/GlobalReloadContext";
+import { useGlobalReloadContext } from "../context/GlobalReloadContext";
 import api from "../api/api";
 import { usePopupContext } from "../context/PopupContext";
 export const useFetchArrayData = (apiUrl) => {
@@ -13,7 +13,7 @@ export const useFetchArrayData = (apiUrl) => {
       setIsPending(true);
       try {
         const res = await api.get(apiUrl);
-        setData(res);
+        setData(res.data);
         if (globalReload) setGlobalReload(false);
       } catch (err) {
         logError(err);

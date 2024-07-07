@@ -1,7 +1,8 @@
 import React from "react";
-import { dateString } from "../../helpers/helpers";
+import { dateString, formatDate } from "../../helpers/helpers";
 function ClubCard({ data }) {
   if (!data) return <></>;
+  console.log(data.dateOfCreation);
   return (
     <>
       <p>
@@ -14,7 +15,10 @@ function ClubCard({ data }) {
         <p>Location:</p> {data.location}
       </p>
       <p>
-        <p>Date of creation:</p> {dateString(data.dateOfCreation)}
+        <p>Date of creation:</p>{" "}
+        {typeof data.dateOfCreation === "string"
+          ? data.dateOfCreation
+          : data.dateOfCreation.toDateString()}
       </p>
     </>
   );

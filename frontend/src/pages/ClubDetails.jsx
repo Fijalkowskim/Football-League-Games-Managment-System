@@ -5,10 +5,11 @@ import { useClub } from "../hooks/exampleDataHooks/useClub";
 import ClubCard from "../components/containers/ClubCard";
 import { fetchClubDetails } from "../hooks/fetchClubDetails";
 import { usePopupContext } from "../context/PopupContext";
+import { useFetchData } from "../hooks/useFetchData";
 
 function ClubDetails() {
   const { id } = useParams();
-  const { data, isPending } = useClub("/club", id);
+  const { data, isPending } = useFetchData("/clubs", id);
   const { logError } = usePopupContext();
 
   const [players, setPlayers] = useState([]);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGlobalReloadContext } from "../context/general/GlobalReloadContext";
+import { useGlobalReloadContext } from "../context/GlobalReloadContext";
 import api from "../api/api";
 export const useFetchData = (apiUrl, id, retrigger, setRetrigger) => {
   const [data, setData] = useState();
@@ -14,7 +14,7 @@ export const useFetchData = (apiUrl, id, retrigger, setRetrigger) => {
         const parsedId = parseInt(id);
         const res = await api.get(`${apiUrl}/${parsedId}`);
         if (res) {
-          setData(res);
+          setData(res.data);
         }
       } catch (err) {
         console.log(err);
