@@ -1,5 +1,5 @@
 import React, { useDebugValue, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DetailsPageWrapper from "./DetailsPageWrapper";
 import { useClub } from "../hooks/exampleDataHooks/useClub";
 import ClubCard from "../components/containers/ClubCard";
@@ -8,15 +8,18 @@ import { usePopupContext } from "../context/PopupContext";
 import { useFetchData } from "../hooks/useFetchData";
 import NavContainer from "../components/containers/NavContainer";
 import ScrollableNavContainer from "../components/containers/ScrollableNavContainer";
+import api from "../api/api";
 
 function ClubDetails() {
   const { id } = useParams();
   const { data, isPending } = useFetchData("/clubs", id);
-  const { logError } = usePopupContext();
+  const { logError, addMessage } = usePopupContext();
 
   const [players, setPlayers] = useState([]);
   const [homeMatches, setHomeMatches] = useState([]);
   const [awayMatches, setAwayMatches] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadDetails = async () => {
@@ -32,12 +35,26 @@ function ClubDetails() {
     };
     loadDetails();
   }, [data]);
+
+  const onDelete = async () => {
+    try {
+      const res = await api.delete(`/clubs/${data?.id}`);
+      if (res) {
+        addMessage("Club deleted successfully");
+        navigate("/");
+      }
+    } catch (err) {
+      logError(err);
+    }
+  };
+
   return (
     <DetailsPageWrapper
       header={`Club details`}
       isPending={isPending}
       data={data}
       editPageLink={"/club/edit"}
+      deleteMethod={onDelete}
     >
       <div className="flex flex-row items-center justify-center gap-8 bg-primary-100 p-4 rounded-md shadow-md">
         <ClubCard data={data} />
