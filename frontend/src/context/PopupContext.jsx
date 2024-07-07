@@ -34,10 +34,15 @@ export function PopupContextProvider({ children }) {
       if (typeof data === "object" && data.message)
         addMessage(data.message, "error", 3000);
       else if (typeof data === "string" && data !== "")
-        addMessage(data.message, "error", 3000);
+        addMessage(data, "error", 3000);
     }
     if (err?.message) {
-      if (typeof message === "string") addMessage(err.message, "error", 3000);
+      if (typeof message === "string")
+        addMessage(
+          err.message === "" ? "Something went wrong" : err.message,
+          "error",
+          3000
+        );
     }
   };
   const removeMessage = (id) => {
