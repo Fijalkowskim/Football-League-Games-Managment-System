@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGlobalReloadContext } from "../context/general/GlobalReloadContext";
-export const useFetchData = (getMethod, id, retrigger, setRetrigger) => {
+import api from "../api/api";
+export const useFetchData = (apiUrl, id, retrigger, setRetrigger) => {
   const [data, setData] = useState();
   const [isPending, setIsPending] = useState(false);
   const { globalReload, setGlobalReload } = useGlobalReloadContext();
@@ -11,8 +12,10 @@ export const useFetchData = (getMethod, id, retrigger, setRetrigger) => {
       setIsPending(true);
       try {
         const parsedId = parseInt(id);
-        const loadedData = await getMethod(parsedId);
-        setData(loadedData);
+        const res = await api.get(`${apiUrl}/${parsedId}`);
+        if (res) {
+          setData(res);
+        }
       } catch (err) {
         console.log(err);
       }

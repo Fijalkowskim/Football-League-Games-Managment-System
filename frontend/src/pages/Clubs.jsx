@@ -7,11 +7,11 @@ import ClubCard from "../components/containers/ClubCard";
 function Clubs() {
   const { data, isPending } = useClubs("/clubs");
   return (
-    <PageWrapper header={"List of clubs"}>
+    <PageWrapper header={"List of clubs"} creationNavingate={"/club/new"}>
       <NavContainer
         data={data}
         isLoading={isPending}
-        navigationPrefix={"/club"}
+        navigationPrefix={"club"}
         CardContent={ClubCard}
       />
     </PageWrapper>
