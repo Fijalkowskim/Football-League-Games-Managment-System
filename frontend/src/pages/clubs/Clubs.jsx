@@ -1,9 +1,8 @@
 import React from "react";
-import PageWrapper from "./PageWrapper";
-import NavContainer from "../components/containers/NavContainer";
-import { useClubs } from "../hooks/exampleDataHooks/useClubs";
-import ClubCard from "../components/containers/ClubCard";
-import { useFetchArrayData } from "../hooks/useFetchArrayData";
+import PageWrapper from "../PageWrapper";
+import NavContainer from "../../components/containers/NavContainer";
+import ClubCard from "../../components/containers/cards/ClubCard";
+import { useFetchArrayData } from "../../hooks/useFetchArrayData";
 
 function Clubs() {
   const { data, isPending } = useFetchArrayData("/clubs");

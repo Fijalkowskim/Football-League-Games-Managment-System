@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import CreatePageWrapper from "./CreatePageWrapper";
-import CustomButton from "../components/general/CustomButton";
-import { usePopupContext } from "../context/PopupContext";
-import api from "../api/api";
-import { useParams } from "react-router-dom";
+import CreatePageWrapper from "../CreatePageWrapper";
+import CustomButton from "../../components/general/CustomButton";
+import { usePopupContext } from "../../context/PopupContext";
+import api from "../../api/api";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CreateClub({ edit }) {
   const { id } = useParams();
@@ -12,6 +12,8 @@ function CreateClub({ edit }) {
   const [location, setLocation] = useState("");
   const [dateOfCreation, setDateOfCreation] = useState(new Date());
   const { logError, addMessage } = usePopupContext();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,9 +41,7 @@ function CreateClub({ edit }) {
           : await api.post("/clubs", { name, location, dateOfCreation });
       if (res) {
         addMessage(`Club ${edit ? "edited" : "created"} successfully`);
-        setName("");
-        setLocation("");
-        setDateOfCreation(new Date());
+        navigate("/clubs");
       }
     } catch (err) {
       logError(err);
