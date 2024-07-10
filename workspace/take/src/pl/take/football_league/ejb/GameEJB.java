@@ -140,17 +140,6 @@ public class GameEJB {
 			return new Pair<Integer, String>(400, "The date of the match is invalid.");
 		}
 		Game match = mapper.mapToFlatGame(matchDto);
-		match.setPlayed(false);
-		match.setHomeResult(null);
-		match.setAwayResult(null);
-		match.setHomeClub(homeClub);
-		Set<Game> homeMatches = homeClub.getHomeMatches();
-		homeMatches.add(match);
-		homeClub.setHomeMatches(homeMatches);
-		match.setAwayClub(awayClub);
-		Set<Game> awayMatches = awayClub.getAwayMatches();
-		awayMatches.add(match);
-		awayClub.setAwayMatches(awayMatches);
 		if(!matchDto.getPlayers().isEmpty())
 		{
 			if(matchDto.getPlayers().size() < 22 || matchDto.getPlayers().size() > 32)
@@ -176,8 +165,8 @@ public class GameEJB {
 						System.out.println("Player with id = " + matchDto.getPlayers().get(i) + " does not exist!");
 						return new Pair<Integer, String>(400, "Player with id = " + matchDto.getPlayers().get(i) + " does not exist.");
 					}
-					if(player.getClub().getId() == match.getHomeClub().getId()) numberOfHomeClubPlayers++;
-					else if(player.getClub().getId() == match.getAwayClub().getId()) numberOfAwayClubPlayers++;
+					if(player.getClub().getId() == homeClub.getId()) numberOfHomeClubPlayers++;
+					else if(player.getClub().getId() == awayClub.getId()) numberOfAwayClubPlayers++;
 					else
 					{
 						System.out.println("Player with id = " + matchDto.getPlayers().get(i) + " does not play for those clubs!");
@@ -204,6 +193,17 @@ public class GameEJB {
 				}
 			}
 		}
+		match.setPlayed(false);
+		match.setHomeResult(null);
+		match.setAwayResult(null);
+		match.setHomeClub(homeClub);
+		Set<Game> homeMatches = homeClub.getHomeMatches();
+		homeMatches.add(match);
+		homeClub.setHomeMatches(homeMatches);
+		match.setAwayClub(awayClub);
+		Set<Game> awayMatches = awayClub.getAwayMatches();
+		awayMatches.add(match);
+		awayClub.setAwayMatches(awayMatches);
 		em.persist(match);
 		long id = match.getId();
 		System.out.println("Match created!");
