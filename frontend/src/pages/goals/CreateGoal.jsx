@@ -84,7 +84,7 @@ function CreateGoal({ edit }) {
           }}
         />
         <label className="text-2xl">Match:</label>
-        <div className=" max-h-[30rem] w-screen max-w-4xl">
+        <div className=" max-h-[30rem] w-screen max-w-4xl overflow-y-scroll">
           <SelectContainer
             apiUrl={`/matches`}
             setMethod={setMatchId}
@@ -94,17 +94,17 @@ function CreateGoal({ edit }) {
         {matchId && (
           <>
             <label className="text-2xl">Scorer:</label>
-            <div className=" max-h-[30rem] w-screen max-w-4xl">
+            <div className="h-[30rem] w-screen max-w-4xl overflow-y-scroll">
               <SelectContainer
-                apiUrl={`/match/${matchId}/players`}
+                apiUrl={`/matches/${matchId}/players`}
                 setMethod={setScorerId}
                 CardContent={PlayerCard}
               />
             </div>
             <label className="text-2xl">Assistant:</label>
-            <div className=" max-h-[30rem] w-screen max-w-4xl">
+            <div className="h-[30rem] w-screen max-w-4xl overflow-y-scroll">
               <SelectContainer
-                apiUrl={`/match/${matchId}/players`}
+                apiUrl={`/matches/${matchId}/players`}
                 setMethod={setAssistantId}
                 CardContent={PlayerCard}
               />

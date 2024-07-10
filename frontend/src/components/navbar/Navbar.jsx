@@ -9,6 +9,8 @@ const navlinks = [
   { name: "Players", to: "/players" },
   { name: "Games", to: "/games" },
   { name: "Goals", to: "/goals" },
+  { name: "Table", to: "/league" },
+  { name: "Schedule", to: "/schedule" },
 ];
 
 function Navbar() {

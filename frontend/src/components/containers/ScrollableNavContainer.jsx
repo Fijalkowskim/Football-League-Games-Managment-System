@@ -12,7 +12,7 @@ function ScrollableNavContainer({
   return (
     <div
       className={cn(
-        "h-fit max-h-[30rem] overflow-y-scroll p-2 w-screen max-w-4xl bg-primary-900/20 rounded-md flex flex-col items-center justify-center gap-2",
+        "h-fit max-h-[30rem] overflow-y-scroll p-2 w-screen max-w-4xl bg-primary-900/20 rounded-md flex flex-col items-center justify-start gap-2",
         className
       )}
     >

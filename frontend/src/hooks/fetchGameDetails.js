@@ -8,6 +8,7 @@ export const fetchGameDetails = async (gameData, logError) => {
   var awayClub;
   try {
     const _players = await api.get(gameData.players);
+
     if (_players) players = _players.data;
     const _goals = await api.get(gameData.goals);
     if (_goals) goals = _goals.data;

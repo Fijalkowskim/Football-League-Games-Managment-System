@@ -26,7 +26,7 @@ function SelectContainer({
     });
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-2 px-4 bg-primary-900/30 rounded-md">
+    <div className="w-full h-full flex flex-col items-center justify-start gap-2 p-2 px-4 bg-primary-900/30 rounded-md overflow-y-scroll">
       {isPending ? (
         <LoadingBar />
       ) : data === undefined ? (
