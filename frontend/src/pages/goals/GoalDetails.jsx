@@ -10,30 +10,29 @@ import api from "../../api/api";
 import GameCard from "../../components/containers/cards/GameCard";
 import ClubCard from "../../components/containers/cards/ClubCard";
 import NavCard from "../../components/containers/NavCard";
+import PlayerCard from "../../components/containers/cards/PlayerCard";
 
 function GoalDetails() {
   const { id } = useParams();
   const { data, isPending } = useFetchData("/goals", id);
   const { logError, addMessage } = usePopupContext();
 
-  const [club, setClub] = useState([]);
-  const [matches, setMatches] = useState([]);
-  const [goals, setGoals] = useState();
-  const [assists, setAssists] = useState();
+  const [match, setMatch] = useState();
+  const [scorer, setScorer] = useState();
+  const [assistant, setAssistant] = useState();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadDetails = async () => {
       if (data) {
-        const { club, matches, goals, assists } = await fetchGoalDetails(
+        const { match, scorer, assistant } = await fetchGoalDetails(
           data,
           logError
         );
-        setClub(club);
-        setMatches(matches);
-        setGoals(goals);
-        setAssists(assists);
+        setMatch(match);
+        setScorer(scorer);
+        setAssistant(assistant);
       }
     };
     loadDetails();
@@ -62,30 +61,19 @@ function GoalDetails() {
       <div className="flex flex-row items-center justify-center gap-8 bg-background-50 p-4 rounded-md shadow-md">
         <GoalCard data={data} />
       </div>
-
-      <h1 className="text-2xl">Club</h1>
-      <NavCard navigationPrefix={"club"} data={club} CardContent={ClubCard} />
-
-      <h1 className="text-2xl">Matches</h1>
-      <ScrollableNavContainer
-        data={matches}
-        isPending={false}
-        navigationPrefix={"game"}
-        CardContent={GameCard}
+      <h1 className="text-2xl">Match</h1>
+      <NavCard navigationPrefix={"game"} data={match} CardContent={GameCard} />
+      <h1 className="text-2xl">Scorer</h1>
+      <NavCard
+        navigationPrefix={"player"}
+        data={scorer}
+        CardContent={PlayerCard}
       />
-      <h1 className="text-2xl">Goals</h1>
-      <ScrollableNavContainer
-        data={goals}
-        isPending={false}
-        navigationPrefix={"goal"}
-        CardContent={GoalCard}
-      />
-      <h1 className="text-2xl">Assists</h1>
-      <ScrollableNavContainer
-        data={assists}
-        isPending={false}
-        navigationPrefix={"game"}
-        CardContent={GoalCard}
+      <h1 className="text-2xl">Assistant</h1>
+      <NavCard
+        navigationPrefix={"player"}
+        data={assistant}
+        CardContent={PlayerCard}
       />
     </DetailsPageWrapper>
   );

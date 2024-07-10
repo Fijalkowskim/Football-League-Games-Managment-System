@@ -120,7 +120,7 @@ function CreateGame({ edit }) {
         {!edit && (
           <>
             <label className="text-2xl">Home club:</label>
-            <div className=" max-h-[30rem] w-screen max-w-4xl">
+            <div className="h-[30rem] w-screen max-w-4xl overflow-y-scroll">
               <SelectContainer
                 apiUrl={`/clubs`}
                 setMethod={setHomeClubId}
@@ -133,7 +133,7 @@ function CreateGame({ edit }) {
         {!edit && (
           <>
             <label className="text-2xl">Away club:</label>
-            <div className=" max-h-[30rem] w-screen max-w-4xl">
+            <div className="h-[30rem] w-screen max-w-4xl overflow-y-scroll">
               <SelectContainer
                 apiUrl={`/clubs`}
                 setMethod={setAwayClubId}
@@ -147,7 +147,7 @@ function CreateGame({ edit }) {
         {homeClubId && awayClubId && (
           <>
             <label className="text-2xl">Home players:</label>
-            <div className=" max-h-[30rem] w-screen max-w-4xl">
+            <div className="h-[30rem] w-screen max-w-4xl overflow-y-scroll">
               <MultiselectContainer
                 selectedEntries={homePlayers}
                 apiUrl={`/clubs/${homeClubId}/players`}
@@ -157,8 +157,9 @@ function CreateGame({ edit }) {
               />
             </div>
             <label className="text-2xl">Away players:</label>
-            <div className=" max-h-[30rem] w-screen max-w-4xl">
+            <div className="h-[30rem] w-screen max-w-4xl overflow-y-scroll">
               <MultiselectContainer
+                selectedEntries={awayPlayers}
                 apiUrl={`/clubs/${awayClubId}/players`}
                 setMethod={setAwayPlayers}
                 maxEntries={16}

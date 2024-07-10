@@ -1,7 +1,13 @@
 import React from "react";
 import LoadingBar from "../general/LoadingBar";
 import NavCard from "./NavCard";
-function NavContainer({ data, isLoading, navigationPrefix, CardContent }) {
+function NavContainer({
+  data,
+  isLoading,
+  navigationPrefix,
+  CardContent,
+  idProperty,
+}) {
   return (
     <>
       {isLoading ? (
@@ -15,6 +21,7 @@ function NavContainer({ data, isLoading, navigationPrefix, CardContent }) {
             id={entry?.id}
             CardContent={CardContent}
             data={entry}
+            idProperty={idProperty}
           />
         ))
       )}

@@ -14,6 +14,8 @@ import PlayerDetails from "./pages/players/PlayerDetails";
 import CreatePlayer from "./pages/players/CreatePlayer";
 import GoalDetails from "./pages/goals/GoalDetails";
 import CreateGoal from "./pages/goals/CreateGoal";
+import League from "./pages/league/League";
+import Schedule from "./pages/league/Schedule";
 function AppRouter() {
   return (
     <>
@@ -39,6 +41,9 @@ function AppRouter() {
         <Route path="/goal/:id" element={<GoalDetails />} />
         <Route path="/goal/new" element={<CreateGoal edit={false} />} />
         <Route path="/goal/edit/:id" element={<CreateGoal edit={true} />} />
+
+        <Route path="/league" element={<League />} />
+        <Route path="/schedule" element={<Schedule />} />
 
         <Route path="*" element={<Navigate to="/clubs" />} />
       </Routes>
