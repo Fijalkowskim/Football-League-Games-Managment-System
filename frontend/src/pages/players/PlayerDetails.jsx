@@ -85,7 +85,7 @@ function PlayerDetails() {
       <ScrollableNavContainer
         data={assists}
         isPending={false}
-        navigationPrefix={"game"}
+        navigationPrefix={"goal"}
         CardContent={GoalCard}
       />
     </DetailsPageWrapper>
